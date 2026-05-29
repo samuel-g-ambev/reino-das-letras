@@ -1,1 +1,1163 @@
-404: Not Found
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Reino das Letras ✨</title>
+  <meta name="description" content="Aprenda a ler brincando no Reino das Letras!">
+  <meta name="theme-color" content="#8B5CF6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Reino das Letras">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <style>
+/* ── RESET & BASE ── */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#F5F0FF;
+  --primary:#7C3AED;--primary-dark:#6D28D9;--primary-lt:#EDE9FE;
+  --pink:#EC4899;--pink-lt:#FCE7F3;
+  --gold:#F59E0B;--gold-lt:#FEF3C7;
+  --green:#059669;--green-lt:#ECFDF5;
+  --red:#DC2626;--red-lt:#FEF2F2;
+  --card:#fff;--border:#E8D5FF;
+  --text:#1F2937;--muted:#9CA3AF;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overflow-x:hidden}
+#app{max-width:430px;margin:0 auto;min-height:100vh;position:relative;background:var(--bg)}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+
+/* ── TOP BAR ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;background:#fff;border-bottom:2px solid var(--border);
+  position:sticky;top:0;z-index:30;
+}
+.tb-item{display:flex;align-items:center;gap:5px;font-weight:800;font-size:.95rem}
+.tb-streak{color:#F97316}
+.tb-hearts{color:var(--red)}
+.tb-xp{color:var(--gold)}
+.goal-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;margin:0 10px}
+.goal-label{font-size:.62rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.goal-track{width:100%;height:9px;background:#F3E8FF;border-radius:5px;overflow:hidden}
+.goal-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--pink));border-radius:5px;transition:width .6s}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:20px 16px 8px;position:relative}
+.mascot{font-size:5rem;display:inline-block;cursor:default;user-select:none}
+.mascot.happy{animation:bounce .6s}
+.mascot.sad{animation:wobble .5s}
+@keyframes bounce{0%,100%{transform:scale(1)}30%{transform:scale(1.3) rotate(-5deg)}60%{transform:scale(1.1) rotate(3deg)}}
+@keyframes wobble{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+.hero h1{font-size:1.85rem;font-weight:900;color:var(--primary);margin:6px 0 2px}
+.hero-sub{font-size:.85rem;color:var(--muted);font-weight:700}
+.xp-pill{
+  display:inline-flex;align-items:center;gap:6px;margin-top:8px;
+  background:var(--gold-lt);color:#92400E;font-weight:800;font-size:.85rem;
+  padding:5px 14px;border-radius:20px;border:2px solid var(--gold);
+}
+
+/* ── SKILL TREE ── */
+.skill-path{padding:16px 20px 100px;flex:1}
+.section-label{font-size:.72rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.skill-connector{width:3px;height:26px;background:linear-gradient(var(--primary),var(--pink));border-radius:2px;margin:0 auto}
+.skill-connector.locked{background:#E5E7EB}
+.skill-wrap{margin-bottom:0}
+.skill-wrap:nth-child(4n+2) .skill-card{margin-left:40px}
+.skill-wrap:nth-child(4n+4) .skill-card{margin-right:40px}
+.skill-card{
+  display:flex;align-items:center;gap:14px;background:var(--card);
+  border-radius:20px;padding:14px 16px;border:2px solid var(--border);
+  box-shadow:0 4px 0 var(--border);cursor:pointer;
+  transition:transform .12s,box-shadow .12s;
+}
+.skill-card:active:not(.locked){transform:translateY(2px);box-shadow:0 2px 0 var(--border)}
+.skill-card.locked{opacity:.4;cursor:not-allowed;pointer-events:none}
+.skill-card.mastered{border-color:var(--gold);box-shadow:0 4px 0 #D97706;background:linear-gradient(135deg,#FFFBEB,#fff)}
+.skill-ico{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:1.9rem;flex-shrink:0;
+}
+.skill-body{flex:1;min-width:0}
+.skill-title{font-weight:800;font-size:.95rem;color:var(--text)}
+.skill-desc{font-size:.72rem;color:var(--muted);margin-top:1px}
+.crowns{display:flex;gap:3px;margin-top:5px}
+.crown{font-size:.85rem}
+.skill-right{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0}
+.skill-btn{
+  background:linear-gradient(135deg,var(--primary),var(--pink));color:#fff;
+  border:none;padding:8px 16px;border-radius:10px;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;
+}
+.skill-card.mastered .skill-btn{background:linear-gradient(135deg,var(--gold),#F97316)}
+
+/* ── TIP SCREEN ── */
+#s-tip{align-items:center;justify-content:center;padding:32px 24px;text-align:center}
+.tip-mascot{font-size:5rem;margin-bottom:12px;animation:float 2s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.tip-bubble{
+  background:#fff;border-radius:20px;padding:20px 24px;
+  border:2px solid var(--border);box-shadow:0 6px 0 var(--border);
+  margin-bottom:24px;max-width:340px;
+}
+.tip-bubble h3{font-size:1.2rem;font-weight:900;color:var(--primary);margin-bottom:8px}
+.tip-bubble p{font-size:.95rem;color:var(--text);line-height:1.5}
+.tip-countdown{font-size:3rem;font-weight:900;color:var(--primary);margin-bottom:12px;min-height:3.5rem}
+.tip-start{
+  background:linear-gradient(135deg,var(--primary),var(--pink));color:#fff;
+  border:none;padding:18px 48px;border-radius:18px;
+  font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;cursor:pointer;
+  box-shadow:0 6px 0 var(--primary-dark);transition:all .15s;
+}
+.tip-start:active{transform:translateY(3px);box-shadow:0 3px 0 var(--primary-dark)}
+.tip-skip{margin-top:14px;font-size:.85rem;color:var(--muted);cursor:pointer;font-weight:700;text-decoration:underline}
+
+/* ── LESSON SCREEN ── */
+#s-lesson .topbar{gap:10px}
+.back-btn{background:none;border:2px solid var(--border);border-radius:10px;
+  font-size:1.1rem;cursor:pointer;color:var(--muted);padding:4px 8px;line-height:1;font-weight:700}
+.prog-track{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--pink));border-radius:5px;transition:width .4s}
+
+.ex-body{flex:1;display:flex;flex-direction:column;padding:16px 16px 96px}
+.ex-type-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--primary-lt);color:var(--primary);
+  font-weight:800;font-size:.72rem;padding:4px 12px;border-radius:20px;
+  margin-bottom:10px;align-self:flex-start;
+}
+.ex-prompt{font-size:1.25rem;font-weight:800;color:var(--text);margin-bottom:14px;line-height:1.3}
+.ex-visual{text-align:center;font-size:5.5rem;margin-bottom:12px;animation:pop .35s}
+@keyframes pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+
+/* big letter display */
+.big-letter{
+  text-align:center;font-size:6rem;font-weight:900;color:var(--primary);
+  background:var(--primary-lt);border-radius:20px;padding:16px;margin-bottom:16px;
+  animation:pop .35s;
+}
+.big-letter.cursive{font-family:'Dancing Script',cursive;font-size:7rem}
+.letter-hint{text-align:center;font-size:.95rem;font-weight:700;color:var(--muted);margin-bottom:12px}
+
+/* word with blank */
+.word-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;margin-bottom:20px}
+.w-syl{font-size:2.6rem;font-weight:900;color:var(--primary)}
+.w-sep{font-size:1.4rem;color:#D1D5DB;margin:0 2px}
+.w-blank{font-size:2.6rem;font-weight:900;color:var(--pink);border-bottom:4px solid var(--pink);min-width:72px;text-align:center;transition:all .3s}
+.w-blank.filled{color:var(--green);border-color:var(--green)}
+
+/* sentence box */
+.sent-box{
+  background:#fff;border-radius:16px;padding:16px;text-align:center;
+  font-size:1.15rem;font-weight:700;color:var(--text);line-height:1.9;
+  border:2px solid var(--border);margin-bottom:18px;
+}
+.s-blank{display:inline-block;min-width:90px;border-bottom:3px solid var(--pink);color:var(--pink);font-weight:900;padding:0 4px;transition:all .3s}
+.s-blank.filled{color:var(--green);border-color:var(--green)}
+
+/* rhyme/word display */
+.feature-word{
+  text-align:center;font-size:2.2rem;font-weight:900;color:var(--primary);
+  background:var(--primary-lt);border-radius:16px;padding:16px;margin-bottom:18px;
+}
+/* speaker button */
+.speaker-btn{
+  display:flex;align-items:center;justify-content:center;
+  gap:8px;background:var(--primary-lt);color:var(--primary);
+  border:2px solid var(--primary);border-radius:14px;
+  padding:10px 20px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;
+  cursor:pointer;margin:0 auto 16px;transition:all .1s;
+}
+.speaker-btn:active{transform:scale(.95)}
+
+/* options 2x2 */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:auto}
+.opts.vowel-grid{grid-template-columns:repeat(5,1fr)}
+.opt{
+  background:var(--card);border:3px solid var(--border);border-radius:16px;
+  padding:14px 8px;font-family:'Nunito',sans-serif;font-weight:800;
+  font-size:1.1rem;color:var(--text);cursor:pointer;text-align:center;
+  box-shadow:0 4px 0 var(--border);transition:all .1s;
+  min-height:64px;display:flex;align-items:center;justify-content:center;
+}
+.opts.vowel-grid .opt{font-size:1.4rem;padding:10px 4px}
+.opt:active:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 var(--border)}
+.opt:disabled{pointer-events:none;cursor:default}
+.opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);box-shadow:0 4px 0 #047857}
+.opt.wrong{background:var(--red-lt);border-color:var(--red);color:var(--red);box-shadow:0 4px 0 #B91C1C;animation:shake .4s}
+.opt.cursive-opt{font-family:'Dancing Script',cursive;font-size:2rem;padding:8px 4px}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+
+/* combo banner */
+.combo-banner{
+  text-align:center;font-size:.9rem;font-weight:800;
+  color:#F97316;margin-bottom:8px;animation:combo-in .3s;
+}
+@keyframes combo-in{0%{transform:scale(.6) rotate(-5deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+
+/* ── FEEDBACK BAR ── */
+.fb{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;padding:14px 18px;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:3px solid;gap:12px;
+}
+.fb.ok{background:var(--green-lt);border-color:var(--green);display:flex}
+.fb.bad{background:var(--red-lt);border-color:var(--red);display:flex}
+.fb.hidden{display:none!important}
+.fb-left{flex:1;min-width:0}
+.fb-title{font-weight:800;font-size:1rem}
+.fb.ok .fb-title{color:var(--green)}
+.fb.bad .fb-title{color:var(--red)}
+.fb-detail{font-size:.78rem;color:#6B7280;margin-top:2px}
+.cont-btn{
+  border:none;padding:13px 18px;border-radius:14px;flex-shrink:0;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;color:#fff;
+  white-space:nowrap;
+}
+.fb.ok .cont-btn{background:var(--green);box-shadow:0 3px 0 #047857}
+.fb.bad .cont-btn{background:var(--red);box-shadow:0 3px 0 #991B1B}
+
+/* ── RESULT SCREEN ── */
+#s-result{align-items:center;justify-content:center;text-align:center;padding:32px 20px}
+.res-mascot{font-size:6rem;margin-bottom:12px;animation:bounce .7s}
+.res-title{font-size:2rem;font-weight:900;color:var(--primary);margin-bottom:4px}
+.res-sub{font-size:.9rem;color:var(--muted);margin-bottom:8px}
+.new-crowns{font-size:2rem;letter-spacing:4px;margin-bottom:24px;min-height:2.4rem}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:320px;margin-bottom:28px}
+.stat-card{background:var(--card);border-radius:16px;padding:14px 6px;border:2px solid var(--border)}
+.s-ico{font-size:1.5rem}
+.s-val{font-size:1.5rem;font-weight:900;color:var(--text)}
+.s-lbl{font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase}
+.res-btns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:280px}
+.btn-home{
+  background:linear-gradient(135deg,var(--primary),var(--pink));color:#fff;
+  border:none;padding:17px 0;border-radius:16px;
+  font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;cursor:pointer;
+  box-shadow:0 6px 0 var(--primary-dark);transition:all .15s;
+}
+.btn-home:active{transform:translateY(3px);box-shadow:0 3px 0 var(--primary-dark)}
+.btn-replay{
+  background:var(--card);color:var(--primary);border:2px solid var(--primary);
+  padding:14px 0;border-radius:16px;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;
+}
+
+/* ── SPARKLES ── */
+#sparkles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999}
+.sp{position:absolute;animation:sp-fly 1s ease-out forwards;pointer-events:none}
+@keyframes sp-fly{0%{transform:translateY(0) scale(1) rotate(0);opacity:1}100%{transform:translateY(-140px) scale(0) rotate(200deg);opacity:0}}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:var(--card);border-radius:14px;padding:10px 18px;
+  box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:200;
+  display:flex;align-items:center;gap:10px;border:2px solid var(--gold);
+  animation:toast-in .35s ease forwards;pointer-events:none;white-space:nowrap;
+}
+@keyframes toast-in{0%{opacity:0;transform:translateX(-50%) translateY(-20px)}100%{opacity:1;transform:translateX(-50%) translateY(0)}}
+.toast-ico{font-size:1.6rem}
+.toast-text{font-weight:800;font-size:.85rem;color:var(--text)}
+.toast-sub{font-size:.72rem;color:var(--muted)}
+  </style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════ HOME ══════════ -->
+<div id="s-home" class="screen active">
+  <div class="topbar">
+    <div class="tb-item tb-streak">🔥<span id="h-streak">1</span></div>
+    <div class="goal-wrap">
+      <div class="goal-label">Meta do dia</div>
+      <div class="goal-track"><div class="goal-fill" id="goal-fill" style="width:0%"></div></div>
+    </div>
+    <div class="tb-item tb-hearts">❤️<span id="h-hearts">5</span></div>
+  </div>
+  <div class="hero">
+    <div class="mascot" id="home-mascot">👸</div>
+    <h1>Reino das Letras</h1>
+    <div class="hero-sub">Aprenda a ler brincando! ✨</div>
+    <div class="xp-pill">⭐ <span id="h-xp">0</span> XP · Nível <span id="h-level">1</span></div>
+  </div>
+  <div class="skill-path" id="skill-path">
+    <div class="section-label">🗺️ Sua jornada mágica</div>
+  </div>
+</div>
+
+<!-- ══════════ TIP SCREEN ══════════ -->
+<div id="s-tip" class="screen">
+  <div class="tip-mascot">👸</div>
+  <div class="tip-bubble">
+    <h3 id="tip-title">Vogais</h3>
+    <p id="tip-body">Vamos aprender as vogais!</p>
+  </div>
+  <div class="tip-countdown" id="tip-cd"></div>
+  <button class="tip-start" onclick="beginLesson()">Começar! ✨</button>
+  <div class="tip-skip" onclick="beginLesson()">Pular →</div>
+</div>
+
+<!-- ══════════ LESSON ══════════ -->
+<div id="s-lesson" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="goHome()">✕</button>
+    <div class="prog-track"><div class="prog-fill" id="e-prog" style="width:0%"></div></div>
+    <div class="tb-item tb-hearts" id="e-hearts-display">❤️5</div>
+  </div>
+  <div class="ex-body" id="ex-body"></div>
+</div>
+
+<!-- ══════════ RESULT ══════════ -->
+<div id="s-result" class="screen">
+  <div class="res-mascot" id="r-mascot">🎉</div>
+  <h2 class="res-title" id="r-title">Parabéns!</h2>
+  <p class="res-sub" id="r-sub">Lição completa</p>
+  <div class="new-crowns" id="r-crowns"></div>
+  <div class="res-grid">
+    <div class="stat-card"><div class="s-ico">⭐</div><div class="s-val" id="r-xp">+0</div><div class="s-lbl">XP Ganho</div></div>
+    <div class="stat-card"><div class="s-ico">✅</div><div class="s-val" id="r-acc">0/0</div><div class="s-lbl">Acertos</div></div>
+    <div class="stat-card"><div class="s-ico">🔥</div><div class="s-val" id="r-combo">0</div><div class="s-lbl">Combo Máx</div></div>
+  </div>
+  <div class="res-btns">
+    <button class="btn-home" onclick="goHome()">🏰 Voltar ao Reino</button>
+    <button class="btn-replay" onclick="replayLesson()">↺ Jogar de novo</button>
+  </div>
+</div>
+
+<!-- FEEDBACK BAR -->
+<div class="fb hidden" id="fb-bar">
+  <div class="fb-left">
+    <div class="fb-title" id="fb-title">✅ Correto!</div>
+    <div class="fb-detail" id="fb-detail"></div>
+  </div>
+  <button class="cont-btn" id="fb-btn" onclick="nextStep()">Continuar →</button>
+</div>
+
+<div id="sparkles"></div>
+</div><!-- /#app -->
+
+<script>
+// ═══════════════════════════════════════════════
+//  CONTENT DATA
+// ═══════════════════════════════════════════════
+
+// Portuguese letter names for TTS
+const LETTER_NAMES = {
+  A:'Á',B:'Bê',C:'Cê',D:'Dê',E:'É',F:'Efe',G:'Gê',H:'Agá',I:'Í',
+  J:'Jota',K:'Ká',L:'Ele',M:'Eme',N:'Ene',O:'Ó',P:'Pê',Q:'Quê',
+  R:'Erre',S:'Esse',T:'Tê',U:'Ú',V:'Vê',W:'Dábliu',X:'Xis',Y:'Ípsilon',Z:'Zê'
+};
+
+// Letter → emoji + word hint for uppercase module
+const LETTER_HINTS = {
+  A:'🐝 ABELHA',B:'⚽ BOLA',C:'🏠 CASA',D:'🎲 DADO',E:'⭐ ESTRELA',
+  F:'🧚 FADA',G:'🐱 GATO',H:'🦛 HIPOPÓTAMO',I:'🏔️ IGLU',J:'🪟 JANELA',
+  K:'🥝 KIWI',L:'🌙 LUA',M:'🍎 MAÇÃ',N:'☁️ NUVEM',O:'🥚 OVO',
+  P:'🦆 PATO',Q:'🧀 QUEIJO',R:'🌹 ROSA',S:'☀️ SOL',T:'🐯 TIGRE',
+  U:'🦄 UNICÓRNIO',V:'🐄 VACA',W:'📶 WIFI',X:'☕ XÍCARA',Y:'🫙 YOGURT',Z:'🦓 ZEBRA'
+};
+
+// Vowels pool
+const VOWELS = ['A','E','I','O','U'];
+
+// Uppercase letters pool (A-Z)
+const UPPER_LETTERS = 'ABCDEFGHIJLMNOPRSTUVZ'.split('');
+
+// Lowercase mapping
+const LOWER_MAP = {A:'a',B:'b',C:'c',D:'d',E:'e',F:'f',G:'g',H:'h',I:'i',
+  J:'j',K:'k',L:'l',M:'m',N:'n',O:'o',P:'p',Q:'q',R:'r',S:'s',T:'t',
+  U:'u',V:'v',W:'w',X:'x',Y:'y',Z:'z'};
+const LOWER_LETTERS = 'abcdefghijlmnoprstuv'.split('');
+
+// Syllables data
+const SYL_DATA = [
+  {syl:'BA',emoji:'🍬',word:'BALA'},{syl:'CA',emoji:'🛏️',word:'CAMA'},
+  {syl:'DA',emoji:'🎲',word:'DADO'},{syl:'FA',emoji:'🧚',word:'FADA'},
+  {syl:'GA',emoji:'🐱',word:'GATO'},{syl:'LA',emoji:'🏞️',word:'LAGO'},
+  {syl:'MA',emoji:'💼',word:'MALA'},{syl:'PA',emoji:'🦆',word:'PATO'},
+  {syl:'RA',emoji:'🐭',word:'RATO'},{syl:'SA',emoji:'🐸',word:'SAPO'},
+  {syl:'BO',emoji:'⚽',word:'BOLA'},{syl:'CO',emoji:'🥥',word:'COCO'},
+  {syl:'FO',emoji:'🔥',word:'FOGO'},{syl:'LO',emoji:'🐺',word:'LOBO'},
+  {syl:'MO',emoji:'🏔️',word:'MORRO'},{syl:'PO',emoji:'🌁',word:'POVO'}
+];
+
+// Rhymes data
+const RHYME_DATA = [
+  {word:'BOLA',emoji:'⚽',answer:'ESCOLA',distractors:['CASA','FLOR','PEDRA','GATO','MESA','FADA']},
+  {word:'FLOR',emoji:'🌸',answer:'DOR',distractors:['BOLA','MESA','GATO','FADA','ROSA','PATO']},
+  {word:'GATO',emoji:'🐱',answer:'PATO',distractors:['BOLA','FLOR','CASA','FADA','ROSA','LOBO']},
+  {word:'FADA',emoji:'🧚',answer:'ESPADA',distractors:['COROA','LUA','FLOR','GATO','BOLA','ROSA']},
+  {word:'LUA',emoji:'🌙',answer:'RUA',distractors:['BOLA','CASA','FLOR','PATO','FOGO','MESA']},
+  {word:'PERA',emoji:'🍐',answer:'FERA',distractors:['BOLA','CASA','PEDRA','GATO','FADA','MESA']},
+  {word:'CAMA',emoji:'🛏️',answer:'FAMA',distractors:['BOLA','FLOR','PEDRA','ROSA','GATO','PATO']},
+  {word:'ROSA',emoji:'🌹',answer:'COISA',distractors:['BOLA','FLOR','PEDRA','CASA','FADA','PATO']}
+];
+
+// Words/images data
+const WORD_DATA = [
+  {emoji:'🌸',word:'FLOR',distractors:['BOLA','CASA','LUA','PATO','FADA','ROSA','GATO']},
+  {emoji:'⭐',word:'ESTRELA',distractors:['JANELA','NUVEM','PEDRA','FLOR','BOLA','COROA']},
+  {emoji:'🏰',word:'CASTELO',distractors:['JARDIM','PALÁCIO','TORRE','CASA','FLOR','BOLA']},
+  {emoji:'🦋',word:'BORBOLETA',distractors:['MARIPOSA','LIBÉLULA','VESPA','ABELHA','BEIJA-FLOR','ARANHA']},
+  {emoji:'🌈',word:'ARCO-ÍRIS',distractors:['NUVEM','CHUVA','SOL','RELÂMPAGO','ESTRELA','LUA']},
+  {emoji:'🧚',word:'FADA',distractors:['BRUXA','ANJO','ELFA','RAINHA','PRINCESA','BRUXINHA']},
+  {emoji:'👑',word:'COROA',distractors:['ESPADA','ESCUDO','MANTO','CETRO','COLAR','ANEL']},
+  {emoji:'🦄',word:'UNICÓRNIO',distractors:['CAVALO','PÉGASO','DRAGÃO','GRIFO','CENTAURO','FÊNIX']},
+  {emoji:'🌹',word:'ROSA',distractors:['FLOR','TULIPA','MARGARIDA','LÍRIO','ORQUÍDEA','GÉRBERA']},
+  {emoji:'🐱',word:'GATO',distractors:['CÃO','COELHO','RATO','RAPOSA','LOBO','PANDA']},
+  {emoji:'🐸',word:'SAPO',distractors:['PATO','PEIXE','COBRA','LAGARTO','TARTARUGA','CROCODILO']},
+  {emoji:'🦆',word:'PATO',distractors:['GALINHA','GANSO','PERU','FAISÃO','POMBA','ANDORINHA']}
+];
+
+// Sentences data
+const SENT_DATA = [
+  {hint:'👸✨',sentence:'A princesa usa uma coroa ___.', answer:'DOURADA', opts:['DOURADA','AZUL','PEQUENA','VELHA']},
+  {hint:'🧚✨',sentence:'A fada voa no ___.', answer:'CÉU', opts:['MAR','CÉU','RIO','CHÃO']},
+  {hint:'🐉🔥',sentence:'O dragão sopra ___ pela boca.', answer:'FOGO', opts:['FOGO','ÁGUA','NEVE','VENTO']},
+  {hint:'🌹💐',sentence:'A rosa cheira muito ___.', answer:'BEM', opts:['MAL','BEM','POUCO','FORTE']},
+  {hint:'📖👸',sentence:'Era uma vez uma ___ corajosa.', answer:'PRINCESA', opts:['BRUXA','RAINHA','PRINCESA','FADA']},
+  {hint:'🏰🌙',sentence:'O castelo é muito ___.', answer:'BONITO', opts:['BONITO','FEIO','VAZIO','FRIO']},
+  {hint:'🦄💫',sentence:'O unicórnio tem um chifre ___.', answer:'BRILHANTE', opts:['BRILHANTE','PARTIDO','CURTO','PESADO']},
+  {hint:'🌟👸',sentence:'A estrela brilha no ___ escuro.', answer:'CÉU', opts:['CÉU','MAR','RIO','LAGO']}
+];
+
+// Helper: pick N random items from array
+function pickRandom(arr, n) {
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a.slice(0,n);
+}
+
+// rnd4: return shuffled 4-item array always containing keepItem
+function rnd4(fullArray, keepItem) {
+  const pool = fullArray.filter(x=>x!==keepItem);
+  const picks = pickRandom(pool, 3);
+  const arr = [keepItem, ...picks];
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return arr;
+}
+
+// ── Build exercise pools for each module ──
+
+function buildVowelExercises() {
+  return VOWELS.map(v=>({
+    type:'hear-tap', module:0,
+    speak: LETTER_NAMES[v],
+    answer: v,
+    options: VOWELS,
+    prompt:'🎧 Ouça · toque a letra',
+    isVowelGrid: true
+  }));
+}
+
+function buildUpperExercises() {
+  return UPPER_LETTERS.map(L=>({
+    type:'hear-tap', module:1,
+    speak: LETTER_NAMES[L] + ' — ' + LETTER_HINTS[L],
+    letter: L,
+    hint: LETTER_HINTS[L],
+    answer: L,
+    options: rnd4(UPPER_LETTERS, L),
+    prompt:'🎧 Ouça · toque a letra'
+  }));
+}
+
+function buildLowerExercises() {
+  return UPPER_LETTERS.map(L=>({
+    type:'match-case', module:2,
+    big: L,
+    answer: LOWER_MAP[L],
+    options: rnd4(UPPER_LETTERS.map(x=>LOWER_MAP[x]).filter(Boolean), LOWER_MAP[L]),
+    prompt:'Toque a minúscula certa'
+  }));
+}
+
+function buildCursiveExercises() {
+  return UPPER_LETTERS.map(L=>({
+    type:'match-cursive', module:3,
+    big: L,
+    answer: L,
+    options: rnd4(UPPER_LETTERS, L),
+    prompt:'Qual letra é essa?'
+  }));
+}
+
+function buildSylExercises() {
+  return SYL_DATA.map(d=>({
+    type:'hear-tap', module:4,
+    speak: d.syl,
+    emoji: d.emoji,
+    word: d.word,
+    answer: d.syl,
+    options: rnd4(SYL_DATA.map(x=>x.syl), d.syl),
+    prompt:'🎧 Ouça · toque a sílaba'
+  }));
+}
+
+function buildWordExercises() {
+  return WORD_DATA.map(d=>({
+    type:'word-img', module:5,
+    emoji: d.emoji,
+    speak: d.word,
+    answer: d.word,
+    options: rnd4([d.word,...d.distractors], d.word),
+    prompt:'Qual é o nome?'
+  }));
+}
+
+function buildRhymeExercises() {
+  return RHYME_DATA.map(d=>({
+    type:'rhyme', module:6,
+    word: d.word,
+    emoji: d.emoji,
+    speak: 'Rima com ' + d.word,
+    answer: d.answer,
+    options: rnd4([d.answer,...d.distractors], d.answer),
+    prompt:'Qual rima?'
+  }));
+}
+
+function buildSentExercises() {
+  return SENT_DATA.map(d=>({
+    type:'sentence', module:7,
+    hint: d.hint,
+    sentence: d.sentence,
+    speak: d.sentence.replace('___', d.answer),
+    answer: d.answer,
+    options: [...d.opts],
+    prompt:'Complete a frase'
+  }));
+}
+
+function buildChallengeExercises() {
+  // 1 from each of the first 8 modules
+  const pools = [
+    buildVowelExercises(),
+    buildUpperExercises(),
+    buildLowerExercises(),
+    buildCursiveExercises(),
+    buildSylExercises(),
+    buildWordExercises(),
+    buildRhymeExercises(),
+    buildSentExercises()
+  ];
+  return pools.map(p=>pickRandom(p,1)[0]);
+}
+
+// ── SKILLS config ──
+const SKILLS = [
+  {
+    id:0, title:'Vogais', emoji:'🌺', bg:'#FFE4F0', color:'#BE185D',
+    desc:'A · E · I · O · U',
+    tipTitle:'🌺 Vogais',
+    tipText:'As vogais são as estrelas do alfabeto! São elas: A, E, I, O, U. Ouça e toque! 🌺',
+    buildExercises: buildVowelExercises
+  },
+  {
+    id:1, title:'Maiúsculas', emoji:'🅰️', bg:'#EDE9FE', color:'#6D28D9',
+    desc:'Ouça e toque a letra',
+    tipTitle:'🅰️ Maiúsculas',
+    tipText:'Ouça o nome da letra e toque nela! Cada letra tem um amigo especial 🐝',
+    buildExercises: buildUpperExercises
+  },
+  {
+    id:2, title:'Minúsculas', emoji:'🔡', bg:'#FEF3C7', color:'#92400E',
+    desc:'Maiúscula → minúscula',
+    tipTitle:'🔡 Minúsculas',
+    tipText:'Veja a letra grande (maiúscula) e toque na letra pequena (minúscula) que combina! 🔡',
+    buildExercises: buildLowerExercises
+  },
+  {
+    id:3, title:'Cursiva', emoji:'✍️', bg:'#FCE7F3', color:'#9D174D',
+    desc:'Letra cursiva → impressa',
+    tipTitle:'✍️ Cursiva',
+    tipText:'Esta letra está escrita em cursiva! Identifique qual letra é e toque nela ✍️',
+    buildExercises: buildCursiveExercises
+  },
+  {
+    id:4, title:'Sílabas', emoji:'✨', bg:'#ECFDF5', color:'#065F46',
+    desc:'Ouça a sílaba mágica',
+    tipTitle:'✨ Sílabas Mágicas',
+    tipText:'Sílabas são os pedaços das palavras! BO-LA tem duas sílabas. Ouça e toque! 👏',
+    buildExercises: buildSylExercises
+  },
+  {
+    id:5, title:'Palavras', emoji:'🌸', bg:'#FFF7ED', color:'#C2410C',
+    desc:'Veja a imagem · ouça a palavra',
+    tipTitle:'🌸 Palavras',
+    tipText:'Olhe a imagem, ouça a palavra e toque na palavra certa! Leia em voz alta! 📖',
+    buildExercises: buildWordExercises
+  },
+  {
+    id:6, title:'Rimas', emoji:'🎵', bg:'#EFF6FF', color:'#1E40AF',
+    desc:'Encontre a rima certa',
+    tipTitle:'🎵 Rimas',
+    tipText:'Palavras que rimam têm o mesmo som no final! BOLA + ESCOLA. Ouça e toque! 🎵',
+    buildExercises: buildRhymeExercises
+  },
+  {
+    id:7, title:'Frases', emoji:'👸', bg:'#F0FDF4', color:'#166534',
+    desc:'Complete a frase do reino',
+    tipTitle:'👸 Frases Mágicas',
+    tipText:'Leia a frase com atenção e escolha a palavra que falta! Você consegue! 📜',
+    buildExercises: buildSentExercises
+  },
+  {
+    id:8, title:'Desafio!', emoji:'🏆', bg:'#FFF1F2', color:'#BE123C',
+    desc:'Mistura de tudo!',
+    tipTitle:'🏆 Grande Desafio',
+    tipText:'É o desafio final! Você vai usar tudo que aprendeu. Respira fundo... vai! 🏆',
+    buildExercises: buildChallengeExercises
+  }
+];
+
+const DAILY_GOAL = 50;
+const MAX_EXERCISES_PER_SESSION = 6;
+
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+function loadState() {
+  const today = new Date().toDateString();
+  const raw = JSON.parse(localStorage.getItem('rl_v3') || 'null');
+  if (!raw) return {
+    xp:0, streak:1, hearts:5,
+    crowns: new Array(SKILLS.length).fill(0),
+    dailyXP:0, lastDate:today, lastStreak:today
+  };
+  if(raw.lastDate !== today){ raw.dailyXP=0; raw.lastDate=today; }
+  if(!raw.crowns || raw.crowns.length < SKILLS.length){
+    raw.crowns = new Array(SKILLS.length).fill(0);
+  }
+  return raw;
+}
+
+const S = loadState();
+
+// Session state
+let CUR = {
+  skill:-1, exercises:[], step:0,
+  correct:0, xpGained:0,
+  combo:0, maxCombo:0,
+  answered:false, gameOver:false
+};
+
+window.advanceTimer = null;
+
+function save(){ localStorage.setItem('rl_v3', JSON.stringify(S)); }
+
+// ═══════════════════════════════════════════════
+//  SPEECH
+// ═══════════════════════════════════════════════
+let voices = [];
+let speechReady = false;
+
+function initSpeech(){
+  if(!window.speechSynthesis) return;
+  function loadVoices(){
+    const all = window.speechSynthesis.getVoices();
+    const ptBR = all.filter(v=>v.lang==='pt-BR' || v.lang.startsWith('pt'));
+    voices = ptBR.length ? ptBR : all;
+    if(all.length) speechReady = true;
+  }
+  loadVoices();
+  window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
+}
+
+function speak(text, delay=0){
+  if(!window.speechSynthesis || !text) return;
+  if(delay>0){ setTimeout(()=>speak(text,0), delay); return; }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'pt-BR';
+  u.rate = 0.75;
+  u.pitch = 1.1;
+  if(voices.length){
+    const ptBR = voices.find(v=>v.lang==='pt-BR');
+    if(ptBR) u.voice = ptBR;
+    else if(voices[0]) u.voice = voices[0];
+  }
+  window.speechSynthesis.speak(u);
+}
+
+function replayAudio(){
+  const ex = CUR.exercises[CUR.step];
+  if(ex && ex.speak) speak(ex.speak);
+}
+
+initSpeech();
+
+// ═══════════════════════════════════════════════
+//  AUDIO BEEPS
+// ═══════════════════════════════════════════════
+function beep(type){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const note=(f,t,d,w='sine')=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type=w; o.frequency.value=f;
+      g.gain.setValueAtTime(.22,ctx.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+d);
+      o.connect(g);g.connect(ctx.destination);
+      o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+d);
+    };
+    if(type==='ok')   {note(523,0,.1);note(659,.12,.1);note(784,.24,.2)}
+    if(type==='combo'){note(784,0,.08);note(1047,.09,.08);note(1319,.18,.25)}
+    if(type==='bad')  {note(200,0,.15,'sawtooth');note(160,.16,.2,'sawtooth')}
+    if(type==='win')  {[523,659,784,880,1047].forEach((f,i)=>note(f,i*.11,.22))}
+  }catch(_){}
+}
+
+// ═══════════════════════════════════════════════
+//  SPARKLES
+// ═══════════════════════════════════════════════
+function sparkle(n=8){
+  const c=document.getElementById('sparkles');
+  const em=['✨','⭐','💫','🌟','💖','🎀','🌸','🦋'];
+  for(let i=0;i<n;i++) setTimeout(()=>{
+    const el=document.createElement('div');
+    el.className='sp';
+    el.textContent=em[Math.floor(Math.random()*em.length)];
+    el.style.cssText=`left:${Math.random()*90}%;top:${25+Math.random()*50}%;font-size:${.9+Math.random()*1.2}rem`;
+    c.appendChild(el);
+    setTimeout(()=>el.remove(),1000);
+  },i*80);
+}
+
+// ═══════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════
+function toast(ico,title,sub){
+  document.querySelector('.toast')?.remove();
+  const el=document.createElement('div');
+  el.className='toast';
+  el.innerHTML=`<div class="toast-ico">${ico}</div><div><div class="toast-text">${title}</div>${sub?`<div class="toast-sub">${sub}</div>`:''}</div>`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),2800);
+}
+
+// ═══════════════════════════════════════════════
+//  SCREEN NAV
+// ═══════════════════════════════════════════════
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goHome(){
+  if(window.advanceTimer){ clearTimeout(window.advanceTimer); window.advanceTimer=null; }
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  show('s-home');
+  renderHome();
+}
+
+// ═══════════════════════════════════════════════
+//  HOME
+// ═══════════════════════════════════════════════
+function renderHome(){
+  const XP_LV=100;
+  const lvl=Math.floor(S.xp/XP_LV)+1;
+  document.getElementById('h-xp').textContent = S.xp;
+  document.getElementById('h-streak').textContent = S.streak;
+  document.getElementById('h-hearts').textContent = S.hearts;
+  document.getElementById('h-level').textContent = lvl;
+  document.getElementById('goal-fill').style.width = Math.min(100,S.dailyXP/DAILY_GOAL*100)+'%';
+
+  const path = document.getElementById('skill-path');
+  const label = path.querySelector('.section-label');
+  path.innerHTML = '';
+  path.appendChild(label);
+
+  SKILLS.forEach((sk,i)=>{
+    const unlocked = i===0 || (S.crowns[i-1]||0)>=1;
+    const crowns = S.crowns[i]||0;
+    const mastered = crowns>=5;
+
+    if(i>0){
+      const conn=document.createElement('div');
+      conn.className='skill-connector'+(unlocked?'':' locked');
+      path.appendChild(conn);
+    }
+
+    const wrap=document.createElement('div');
+    wrap.className='skill-wrap';
+
+    const card=document.createElement('div');
+    card.className='skill-card'+(unlocked?'':' locked')+(mastered?' mastered':'');
+    if(unlocked) card.onclick=()=>openSkill(i);
+
+    const crownHTML=Array.from({length:5},(_,c)=>`<span class="crown">${c<crowns?'👑':'⬜'}</span>`).join('');
+
+    card.innerHTML=`
+      <div class="skill-ico" style="background:${sk.bg}">${sk.emoji}</div>
+      <div class="skill-body">
+        <div class="skill-title">${sk.title}</div>
+        <div class="skill-desc">${sk.desc}</div>
+        <div class="crowns">${crownHTML}</div>
+      </div>
+      <div class="skill-right">
+        <button class="skill-btn">${!unlocked?'🔒':mastered?'↺':'Jogar'}</button>
+      </div>`;
+
+    wrap.appendChild(card);
+    path.appendChild(wrap);
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  OPEN SKILL → TIP
+// ═══════════════════════════════════════════════
+let tipCountdownTimer = null;
+
+function openSkill(idx){
+  const unlocked = idx===0 || (S.crowns[idx-1]||0)>=1;
+  if(!unlocked){ toast('🔒','Bloqueado!','Complete a lição anterior primeiro'); return; }
+
+  if(tipCountdownTimer){ clearInterval(tipCountdownTimer); tipCountdownTimer=null; }
+
+  // Build exercises (randomised subset)
+  const sk = SKILLS[idx];
+  let pool = sk.buildExercises();
+  // Shuffle pool, pick up to MAX_EXERCISES_PER_SESSION
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  const exercises = pool.slice(0, MAX_EXERCISES_PER_SESSION);
+
+  CUR = {
+    skill:idx, exercises,
+    step:0, correct:0, xpGained:0,
+    combo:0, maxCombo:0,
+    answered:false, gameOver:false
+  };
+
+  document.getElementById('tip-title').textContent = sk.tipTitle;
+  document.getElementById('tip-body').textContent = sk.tipText;
+
+  // 3-2-1 countdown
+  let count=3;
+  const cdEl=document.getElementById('tip-cd');
+  cdEl.textContent=count;
+  tipCountdownTimer=setInterval(()=>{
+    count--;
+    if(count>0){ cdEl.textContent=count; }
+    else{ clearInterval(tipCountdownTimer); tipCountdownTimer=null; cdEl.textContent=''; beginLesson(); }
+  },1000);
+
+  show('s-tip');
+}
+
+function beginLesson(){
+  if(tipCountdownTimer){ clearInterval(tipCountdownTimer); tipCountdownTimer=null; }
+  document.getElementById('tip-cd').textContent='';
+  show('s-lesson');
+  renderExercise();
+}
+
+function replayLesson(){
+  // rebuild exercises for same skill
+  const idx = CUR.skill;
+  const sk = SKILLS[idx];
+  let pool = sk.buildExercises();
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  const exercises = pool.slice(0, MAX_EXERCISES_PER_SESSION);
+
+  CUR = {
+    skill:idx, exercises,
+    step:0, correct:0, xpGained:0,
+    combo:0, maxCombo:0,
+    answered:false, gameOver:false
+  };
+  show('s-lesson');
+  renderExercise();
+}
+
+// ═══════════════════════════════════════════════
+//  RENDER EXERCISE
+// ═══════════════════════════════════════════════
+function renderExercise(){
+  if(window.advanceTimer){ clearTimeout(window.advanceTimer); window.advanceTimer=null; }
+
+  const ex = CUR.exercises[CUR.step];
+  const total = CUR.exercises.length;
+
+  document.getElementById('e-prog').style.width=(CUR.step/total*100)+'%';
+  document.getElementById('e-hearts-display').textContent='❤️'+S.hearts;
+  document.getElementById('fb-bar').className='fb hidden';
+  CUR.answered=false;
+
+  const body=document.getElementById('ex-body');
+  let html='';
+
+  // combo banner
+  if(CUR.combo>=3){
+    const bonus=CUR.combo>=5?20:10;
+    html+=`<div class="combo-banner">🔥 Combo ×${CUR.combo}! +${bonus} XP bônus</div>`;
+  }
+
+  const TYPE_LABELS={
+    0:'🌺 Vogais',1:'🅰️ Maiúsculas',2:'🔡 Minúsculas',
+    3:'✍️ Cursiva',4:'✨ Sílabas',5:'🌸 Palavras',
+    6:'🎵 Rimas',7:'👸 Frases',8:'🏆 Desafio'
+  };
+  const pillLabel = TYPE_LABELS[ex.module] || '';
+
+  if(ex.type==='hear-tap'){
+    html+=`<div class="ex-type-pill">${pillLabel}</div>`;
+    html+=`<div class="ex-prompt">${ex.prompt}</div>`;
+
+    // show emoji if has one (syllables/words show word+emoji)
+    if(ex.emoji){
+      html+=`<div class="ex-visual">${ex.emoji}</div>`;
+    }
+    if(ex.hint){
+      html+=`<div class="letter-hint">${ex.hint}</div>`;
+    }
+
+    // speaker button
+    const safeSpeak = (ex.speak||'').replace(/'/g,"&#39;");
+    html+=`<button class="speaker-btn" onclick="speak('${safeSpeak}')">🔊 Ouvir de novo</button>`;
+
+    // vowel grid (5 columns) vs normal 2x2
+    if(ex.isVowelGrid){
+      html+=`<div class="opts vowel-grid">`;
+      VOWELS.forEach(v=>{
+        const safe=v.replace(/'/g,"&#39;");
+        html+=`<button class="opt" data-val="${v}" onclick="pick(this,'${safe}','${ex.answer}')">${v}</button>`;
+      });
+      html+=`</div>`;
+    } else {
+      const shuffledOpts = shuffleArr([...ex.options]);
+      html+=`<div class="opts">`;
+      shuffledOpts.forEach(o=>{
+        const safe=o.replace(/'/g,"&#39;");
+        const ans=(ex.answer||'').replace(/'/g,"&#39;");
+        html+=`<button class="opt" data-val="${o}" onclick="pick(this,'${safe}','${ans}')">${o}</button>`;
+      });
+      html+=`</div>`;
+    }
+
+  } else if(ex.type==='match-case'){
+    html+=`<div class="ex-type-pill">${pillLabel}</div>`;
+    html+=`<div class="ex-prompt">${ex.prompt}</div>`;
+    html+=`<div class="big-letter">${ex.big}</div>`;
+    const shuffledOpts=shuffleArr([...ex.options]);
+    html+=`<div class="opts">`;
+    shuffledOpts.forEach(o=>{
+      const safe=o.replace(/'/g,"&#39;");
+      const ans=(ex.answer||'').replace(/'/g,"&#39;");
+      html+=`<button class="opt" data-val="${o}" onclick="pick(this,'${safe}','${ans}')">${o}</button>`;
+    });
+    html+=`</div>`;
+
+  } else if(ex.type==='match-cursive'){
+    html+=`<div class="ex-type-pill">${pillLabel}</div>`;
+    html+=`<div class="ex-prompt">${ex.prompt}</div>`;
+    html+=`<div class="big-letter cursive">${ex.big}</div>`;
+    const shuffledOpts=shuffleArr([...ex.options]);
+    html+=`<div class="opts">`;
+    shuffledOpts.forEach(o=>{
+      const safe=o.replace(/'/g,"&#39;");
+      const ans=(ex.answer||'').replace(/'/g,"&#39;");
+      html+=`<button class="opt" data-val="${o}" onclick="pick(this,'${safe}','${ans}')">${o}</button>`;
+    });
+    html+=`</div>`;
+
+  } else if(ex.type==='word-img'){
+    html+=`<div class="ex-type-pill">${pillLabel}</div>`;
+    html+=`<div class="ex-prompt">${ex.prompt}</div>`;
+    html+=`<div class="ex-visual">${ex.emoji}</div>`;
+    const safeSpeak=(ex.speak||'').replace(/'/g,"&#39;");
+    html+=`<button class="speaker-btn" onclick="speak('${safeSpeak}')">🔊 Ouvir de novo</button>`;
+    const shuffledOpts=shuffleArr([...ex.options]);
+    html+=`<div class="opts">`;
+    shuffledOpts.forEach(o=>{
+      const safe=o.replace(/'/g,"&#39;");
+      const ans=(ex.answer||'').replace(/'/g,"&#39;");
+      html+=`<button class="opt" data-val="${o}" onclick="pick(this,'${safe}','${ans}')">${o}</button>`;
+    });
+    html+=`</div>`;
+
+  } else if(ex.type==='rhyme'){
+    html+=`<div class="ex-type-pill">${pillLabel}</div>`;
+    html+=`<div class="ex-prompt">${ex.prompt}</div>`;
+    html+=`<div class="feature-word">${ex.emoji} ${ex.word}</div>`;
+    const safeSpeak=(ex.speak||'').replace(/'/g,"&#39;");
+    html+=`<button class="speaker-btn" onclick="speak('${safeSpeak}')">🔊 Ouvir de novo</button>`;
+    const shuffledOpts=shuffleArr([...ex.options]);
+    html+=`<div class="opts">`;
+    shuffledOpts.forEach(o=>{
+      const safe=o.replace(/'/g,"&#39;");
+      const ans=(ex.answer||'').replace(/'/g,"&#39;");
+      html+=`<button class="opt" data-val="${o}" onclick="pick(this,'${safe}','${ans}')">${o}</button>`;
+    });
+    html+=`</div>`;
+
+  } else if(ex.type==='sentence'){
+    html+=`<div class="ex-type-pill">${pillLabel}</div>`;
+    html+=`<div class="ex-prompt">${ex.prompt}</div>`;
+    html+=`<div class="ex-visual" style="font-size:3.5rem">${ex.hint}</div>`;
+    const disp=ex.sentence.replace('___','<span class="s-blank" id="s-blank-el">___</span>');
+    html+=`<div class="sent-box">${disp}</div>`;
+    const safeSpeak=(ex.speak||'').replace(/'/g,"&#39;");
+    html+=`<button class="speaker-btn" onclick="speak('${safeSpeak}')">🔊 Ouvir de novo</button>`;
+    const shuffledOpts=shuffleArr([...ex.options]);
+    html+=`<div class="opts">`;
+    shuffledOpts.forEach(o=>{
+      const safe=o.replace(/'/g,"&#39;");
+      const ans=(ex.answer||'').replace(/'/g,"&#39;");
+      html+=`<button class="opt" data-val="${o}" onclick="pick(this,'${safe}','${ans}')">${o}</button>`;
+    });
+    html+=`</div>`;
+  }
+
+  body.innerHTML=html;
+
+  // Auto-speak after 300ms
+  if(ex.speak) speak(ex.speak, 300);
+}
+
+// ═══════════════════════════════════════════════
+//  ANSWER HANDLING
+// ═══════════════════════════════════════════════
+function pick(btn, chosen, correct){
+  if(CUR.answered || CUR.gameOver) return;
+  CUR.answered=true;
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+
+  const right = chosen===correct;
+
+  if(right){
+    btn.classList.add('correct');
+
+    // fill blank if present
+    const blankEl=document.getElementById('blank-el')||document.getElementById('s-blank-el');
+    if(blankEl){ blankEl.textContent=chosen; blankEl.className=(blankEl.className+' filled'); }
+
+    CUR.combo++;
+    CUR.maxCombo=Math.max(CUR.maxCombo,CUR.combo);
+    CUR.correct++;
+
+    let xp=10;
+    if(CUR.combo>=5){ xp+=20; beep('combo'); sparkle(14); }
+    else if(CUR.combo>=3){ xp+=10; beep('combo'); sparkle(8); }
+    else { beep('ok'); sparkle(4); }
+
+    S.xp+=xp; S.dailyXP+=xp; CUR.xpGained+=xp;
+    save();
+
+    const okMsgs=['✅ Incrível!','✅ Perfeito!','✅ Muito bem!','✅ Arrasou!','✅ Que demais!'];
+    const okSubs=['Continue assim, princesa! 🌟','Você é demais! 💖','Parabéns! ✨','Mandou bem! 👏','Você brilha! 🌸'];
+    const idx=Math.floor(Math.random()*okMsgs.length);
+    const subMsg=CUR.combo>=3?`🔥 Combo ×${CUR.combo}!`:okSubs[idx];
+    setFB(true, okMsgs[idx], subMsg);
+
+    // Mascot bounce
+    const m=document.getElementById('home-mascot');
+    if(m){m.classList.remove('happy','sad');void m.offsetWidth;m.classList.add('happy');}
+
+    // Speak correct answer
+    setTimeout(()=>speak(correct),600);
+
+    // Auto-advance after 1800ms
+    window.advanceTimer=setTimeout(()=>{ window.advanceTimer=null; nextStep(); },1800);
+
+  } else {
+    btn.classList.add('wrong');
+    // highlight correct
+    document.querySelectorAll('.opt').forEach(b=>{
+      if(b.dataset.val===correct) b.classList.add('correct');
+    });
+    CUR.combo=0;
+    S.hearts=Math.max(0,S.hearts-1);
+    document.getElementById('e-hearts-display').textContent='❤️'+S.hearts;
+    beep('bad');
+    save();
+
+    setFB(false,'💪 Quase!',`A resposta é: ${correct}`);
+    speak(correct, 600);
+
+    if(S.hearts===0){
+      CUR.gameOver=true;
+      document.getElementById('fb-btn').textContent='Ver resultado →';
+    }
+  }
+}
+
+function setFB(ok,title,detail){
+  const bar=document.getElementById('fb-bar');
+  bar.className='fb '+(ok?'ok':'bad');
+  document.getElementById('fb-title').textContent=title;
+  document.getElementById('fb-detail').textContent=detail;
+  document.getElementById('fb-btn').textContent=ok?'Continuar →':'Tentar →';
+}
+
+function nextStep(){
+  if(window.advanceTimer){ clearTimeout(window.advanceTimer); window.advanceTimer=null; }
+  if(CUR.gameOver){ endLesson(); return; }
+  CUR.step++;
+  if(CUR.step>=CUR.exercises.length) endLesson();
+  else renderExercise();
+}
+
+// ═══════════════════════════════════════════════
+//  END LESSON
+// ═══════════════════════════════════════════════
+function endLesson(){
+  const total=CUR.exercises.length;
+  const pct=total>0?CUR.correct/total:0;
+  const newCrowns=pct>=.9?5:pct>=.75?4:pct>=.6?3:pct>=.4?2:pct>=.25?1:0;
+  const prev=S.crowns[CUR.skill]||0;
+  if(newCrowns>prev) S.crowns[CUR.skill]=newCrowns;
+
+  // streak
+  const today=new Date().toDateString();
+  if(S.lastStreak!==today){ S.streak++; S.lastStreak=today; }
+
+  // daily goal
+  if(S.dailyXP>=DAILY_GOAL && (S.dailyXP-CUR.xpGained)<DAILY_GOAL){
+    setTimeout(()=>toast('🎯','Meta do dia!','Você completou sua meta! 🔥'),600);
+  }
+
+  // restore hearts daily
+  if(S.hearts<5) S.hearts=5;
+
+  save();
+
+  const won=newCrowns>=1;
+  document.getElementById('r-mascot').textContent=won?'🎉':'💪';
+  document.getElementById('r-title').textContent=won?'Parabéns! 🌟':'Continue tentando!';
+  document.getElementById('r-sub').textContent=won
+    ?`"${SKILLS[CUR.skill].title}" — ${pct>=.9?'Perfeito! 🌟':pct>=.6?'Muito bem! ✨':'Bem feito! 👏'}`
+    :'Repita para ganhar coroas! 👑';
+  document.getElementById('r-crowns').textContent=newCrowns>0
+    ?'👑'.repeat(newCrowns)+'⬜'.repeat(5-newCrowns)
+    :'⬜⬜⬜⬜⬜';
+  document.getElementById('r-xp').textContent='+'+CUR.xpGained;
+  document.getElementById('r-acc').textContent=`${CUR.correct}/${total}`;
+  document.getElementById('r-combo').textContent=CUR.maxCombo;
+
+  beep('win');
+  show('s-result');
+  if(won){ setTimeout(()=>sparkle(14),300); setTimeout(()=>sparkle(10),900); }
+}
+
+// ═══════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════
+function shuffleArr(a){
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+renderHome();
+</script>
+</body>
+</html>
