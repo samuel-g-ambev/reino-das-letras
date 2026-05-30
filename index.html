@@ -225,26 +225,25 @@ body{
 .fb{
   position:fixed;bottom:0;left:50%;transform:translateX(-50%);
   width:100%;max-width:430px;
-  padding:16px 20px calc(16px + env(safe-area-inset-bottom,0px));
+  padding:18px 20px calc(18px + env(safe-area-inset-bottom,0px));
   z-index:50;display:flex;align-items:center;justify-content:space-between;gap:14px;
-  border-top:1px solid;
-  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-top:1.5px solid;
 }
-.fb.ok{background:rgba(52,199,89,0.1);border-color:rgba(52,199,89,0.25);display:flex}
-.fb.bad{background:rgba(255,59,48,0.08);border-color:rgba(255,59,48,0.2);display:flex}
+.fb.ok{background:#E8FAF0;border-color:rgba(52,199,89,0.45);display:flex}
+.fb.bad{background:#FDECEA;border-color:rgba(255,59,48,0.35);display:flex}
 .fb.hidden{display:none!important}
 .fb-left{flex:1;min-width:0}
-.fb-title{font-weight:700;font-size:.98rem}
-.fb.ok .fb-title{color:#1a7a36}
-.fb.bad .fb-title{color:#cc2222}
-.fb-detail{font-size:.76rem;color:var(--muted);margin-top:2px}
+.fb-title{font-weight:800;font-size:1.05rem}
+.fb.ok .fb-title{color:#187a36}
+.fb.bad .fb-title{color:#c0221e}
+.fb-detail{font-size:.78rem;color:var(--muted);margin-top:3px;font-weight:500}
 .cont-btn{
-  border:none;padding:14px 24px;border-radius:50px;flex-shrink:0;
-  font-family:inherit;font-weight:700;font-size:.88rem;cursor:pointer;color:#fff;
-  white-space:nowrap;
+  border:none;padding:15px 26px;border-radius:50px;flex-shrink:0;
+  font-family:inherit;font-weight:800;font-size:.95rem;cursor:pointer;color:#fff;
+  white-space:nowrap;letter-spacing:.2px;
 }
-.fb.ok .cont-btn{background:var(--green);box-shadow:0 4px 14px rgba(52,199,89,0.38)}
-.fb.bad .cont-btn{background:var(--red);box-shadow:0 4px 14px rgba(255,59,48,0.35)}
+.fb.ok .cont-btn{background:var(--green);box-shadow:0 4px 16px rgba(52,199,89,0.45)}
+.fb.bad .cont-btn{background:var(--red);box-shadow:0 4px 16px rgba(255,59,48,0.4)}
 
 /* ── RESULT SCREEN ── */
 #s-result{align-items:center;justify-content:center;text-align:center;padding:40px 24px}
