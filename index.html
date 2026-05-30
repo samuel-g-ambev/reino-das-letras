@@ -141,6 +141,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 }
 .big-letter.cursive{font-family:'Dancing Script',cursive;font-size:7rem}
 .letter-hint{text-align:center;font-size:.95rem;font-weight:700;color:var(--muted);margin-bottom:12px}
+/* hero visual: large emoji + word, fills available space */
+.ex-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:0;padding:8px 0}
+.ex-hero-emoji{font-size:9rem;line-height:1;animation:pop .35s}
+.ex-hero-word{font-size:1.8rem;font-weight:900;color:var(--primary);letter-spacing:3px;text-align:center}
+/* vowel exercise: spread content vertically */
+.vowel-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
 
 /* word with blank */
 .word-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;margin-bottom:20px}
@@ -456,15 +462,20 @@ function buildVowelExercises() {
 }
 
 function buildUpperExercises() {
-  return UPPER_LETTERS.map(L=>({
-    type:'hear-tap', module:1,
-    speak: LETTER_NAMES[L] + ' — ' + LETTER_HINTS[L],
-    letter: L,
-    hint: LETTER_HINTS[L],
-    answer: L,
-    options: rnd4(UPPER_LETTERS, L),
-    prompt:'🎧 Ouça · toque a letra'
-  }));
+  return UPPER_LETTERS.map(L=>{
+    const raw = LETTER_HINTS[L];
+    const sp = raw.indexOf(' ');
+    const hintEmoji = sp > -1 ? raw.slice(0, sp) : raw;
+    const hintWord  = sp > -1 ? raw.slice(sp + 1) : '';
+    return {
+      type:'hear-tap', module:1,
+      speak: LETTER_NAMES[L] + ', de ' + hintWord,
+      hintEmoji, hintWord,
+      answer: L,
+      options: rnd4(UPPER_LETTERS, L),
+      prompt:'🎧 Ouça · toque a letra'
+    };
+  });
 }
 
 function buildLowerExercises() {
@@ -490,9 +501,9 @@ function buildCursiveExercises() {
 function buildSylExercises() {
   return SYL_DATA.map(d=>({
     type:'hear-tap', module:4,
-    speak: d.syl,
-    emoji: d.emoji,
-    word: d.word,
+    speak: d.syl.toLowerCase(),
+    hintEmoji: d.emoji,
+    hintWord: d.word,
     answer: d.syl,
     options: rnd4(SYL_DATA.map(x=>x.syl), d.syl),
     prompt:'🎧 Ouça · toque a sílaba'
@@ -673,8 +684,13 @@ function speak(text, delay=0){
   if(!window.speechSynthesis || !text) return;
   if(delay>0){ setTimeout(()=>speak(text,0), delay); return; }
   window.speechSynthesis.cancel();
-  // Single char: add period so TTS reads as word, not spelling-mode ("maiúsculo")
-  const spoken = /^[a-zA-Z]$/.test(text) ? text.toLowerCase() + '.' : text;
+  // Strip emoji (surrogate pairs + BMP symbol blocks)
+  let clean = text
+    .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, '')
+    .replace(/[☀-➿︀-️]/g, '')
+    .replace(/\b[A-Z]{2,}\b/g, w => w.toLowerCase())
+    .replace(/\s+/g, ' ').trim();
+  const spoken = /^[a-zA-Z]$/.test(clean) ? clean.toLowerCase() + '.' : clean;
   const u = new SpeechSynthesisUtterance(spoken);
   u.lang = 'pt-BR';
   u.rate = 0.6;
@@ -914,17 +930,23 @@ function renderExercise(){
     html+=`<div class="ex-type-pill">${pillLabel}</div>`;
     html+=`<div class="ex-prompt">${ex.prompt}</div>`;
 
-    // show emoji if has one (syllables/words show word+emoji)
-    if(ex.emoji){
-      html+=`<div class="ex-visual">${ex.emoji}</div>`;
-    }
-    if(ex.hint){
-      html+=`<div class="letter-hint">${ex.hint}</div>`;
-    }
-
-    // speaker button
     const safeSpeak = (ex.speak||'').replace(/'/g,"&#39;");
-    html+=`<button class="speaker-btn" onclick="speak('${safeSpeak}')">🔊 Ouvir de novo</button>`;
+
+    if(ex.hintEmoji){
+      // Hero layout: large emoji + word fills vertical space
+      html+=`<div class="ex-hero">`;
+      html+=`<div class="ex-hero-emoji">${ex.hintEmoji}</div>`;
+      if(ex.hintWord) html+=`<div class="ex-hero-word">${ex.hintWord}</div>`;
+      html+=`</div>`;
+      html+=`<button class="speaker-btn" onclick="speak('${safeSpeak}')">🔊 Ouvir de novo</button>`;
+    } else if(ex.isVowelGrid){
+      // Vowel layout: centered speaker button fills space
+      html+=`<div class="vowel-center">`;
+      html+=`<button class="speaker-btn" style="padding:20px 40px;font-size:1.1rem" onclick="speak('${safeSpeak}')">🔊 Ouvir de novo</button>`;
+      html+=`</div>`;
+    } else {
+      html+=`<button class="speaker-btn" onclick="speak('${safeSpeak}')">🔊 Ouvir de novo</button>`;
+    }
 
     // vowel grid (5 columns) vs normal 2x2
     if(ex.isVowelGrid){
