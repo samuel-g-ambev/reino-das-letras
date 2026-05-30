@@ -122,7 +122,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .prog-track{flex:1;height:10px;background:var(--border);border-radius:5px;overflow:hidden}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--pink));border-radius:5px;transition:width .4s}
 
-.ex-body{flex:1;display:flex;flex-direction:column;padding:16px 16px 96px}
+.ex-body{flex:1;display:flex;flex-direction:column;padding:16px 16px calc(96px + env(safe-area-inset-bottom,0px))}
 .ex-type-pill{
   display:inline-flex;align-items:center;gap:5px;
   background:var(--primary-lt);color:var(--primary);
@@ -174,7 +174,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 .speaker-btn:active{transform:scale(.95)}
 
 /* options 2x2 */
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:auto}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
 .opts.vowel-grid{grid-template-columns:repeat(5,1fr)}
 .opt{
   background:var(--card);border:3px solid var(--border);border-radius:16px;
@@ -201,8 +201,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);min-height:100vh;overf
 /* ── FEEDBACK BAR ── */
 .fb{
   position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:430px;padding:14px 18px;z-index:50;
-  display:flex;align-items:center;justify-content:space-between;
+  width:100%;max-width:430px;
+  padding:14px 18px calc(14px + env(safe-area-inset-bottom,0px));
+  z-index:50;display:flex;align-items:center;justify-content:space-between;
   border-top:3px solid;gap:12px;
 }
 .fb.ok{background:var(--green-lt);border-color:var(--green);display:flex}
@@ -672,7 +673,9 @@ function speak(text, delay=0){
   if(!window.speechSynthesis || !text) return;
   if(delay>0){ setTimeout(()=>speak(text,0), delay); return; }
   window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
+  // Single char: add period so TTS reads as word, not spelling-mode ("maiúsculo")
+  const spoken = /^[a-zA-Z]$/.test(text) ? text.toLowerCase() + '.' : text;
+  const u = new SpeechSynthesisUtterance(spoken);
   u.lang = 'pt-BR';
   u.rate = 0.75;
   u.pitch = 1.1;
