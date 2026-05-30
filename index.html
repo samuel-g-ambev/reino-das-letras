@@ -677,12 +677,15 @@ function speak(text, delay=0){
   const spoken = /^[a-zA-Z]$/.test(text) ? text.toLowerCase() + '.' : text;
   const u = new SpeechSynthesisUtterance(spoken);
   u.lang = 'pt-BR';
-  u.rate = 0.75;
-  u.pitch = 1.1;
+  u.rate = 0.6;
+  u.pitch = 1.0;
   if(voices.length){
-    const ptBR = voices.find(v=>v.lang==='pt-BR');
+    const ptBR =
+      voices.find(v=>v.lang==='pt-BR' && /premium|enhanced/i.test(v.name)) ||
+      voices.find(v=>v.lang==='pt-BR') ||
+      voices.find(v=>v.lang.startsWith('pt')) ||
+      voices[0];
     if(ptBR) u.voice = ptBR;
-    else if(voices[0]) u.voice = voices[0];
   }
   window.speechSynthesis.speak(u);
 }
@@ -1060,9 +1063,6 @@ function pick(btn, chosen, correct){
     // Mascot bounce
     const m=document.getElementById('home-mascot');
     if(m){m.classList.remove('happy','sad');void m.offsetWidth;m.classList.add('happy');}
-
-    // Speak correct answer
-    setTimeout(()=>speak(correct),600);
 
     // Auto-advance after 1800ms
     window.advanceTimer=setTimeout(()=>{ window.advanceTimer=null; nextStep(); },1800);
