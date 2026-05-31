@@ -245,7 +245,9 @@ body{
   font-family:inherit;font-weight:800;font-size:.95rem;cursor:pointer;color:#fff;
   white-space:nowrap;letter-spacing:.2px;
 }
-.fb.ok .cont-btn{background:var(--green);box-shadow:0 4px 16px rgba(52,199,89,0.45)}
+/* hide button on correct — auto-advance handles it; show when game over */
+.fb.ok .cont-btn{display:none}
+.fb.ok.fb-force-btn .cont-btn{display:block;background:var(--green);box-shadow:0 4px 16px rgba(52,199,89,0.45)}
 .fb.bad .cont-btn{background:var(--red);box-shadow:0 4px 16px rgba(255,59,48,0.4)}
 
 /* ── RESULT SCREEN ── */
@@ -1582,17 +1584,17 @@ function pick(btn, chosen, correct){
 
     if(S.hearts===0){
       CUR.gameOver=true;
-      document.getElementById('fb-btn').textContent='Ver resultado →';
+      document.getElementById('fb-bar').classList.add('fb-force-btn');
     }
   }
 }
 
-function setFB(ok,title,detail){
+function setFB(ok,title,detail,forceBtn){
   const bar=document.getElementById('fb-bar');
-  bar.className='fb '+(ok?'ok':'bad');
+  bar.className='fb '+(ok?'ok':'bad')+(forceBtn?' fb-force-btn':'');
   document.getElementById('fb-title').textContent=title;
   document.getElementById('fb-detail').textContent=detail;
-  document.getElementById('fb-btn').textContent=ok?'Continuar →':'Tentar →';
+  document.getElementById('fb-btn').textContent=ok?'Ver resultado →':'Tentar →';
 }
 
 function nextStep(){
@@ -1805,7 +1807,7 @@ function bwTap(el, syl, idx){
       save();
       setTimeout(()=>bwClear(true), 700);
       setFB(false,'💪 Quase!','Tente de novo na ordem certa!');
-      if(S.hearts===0){CUR.answered=true;CUR.gameOver=true;document.getElementById('fb-btn').textContent='Ver resultado →';}
+      if(S.hearts===0){CUR.answered=true;CUR.gameOver=true;document.getElementById('fb-bar').classList.add('fb-force-btn');}
     }
   }
 }
