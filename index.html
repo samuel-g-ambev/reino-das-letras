@@ -281,6 +281,157 @@ body{
 .sp{position:absolute;animation:sp-fly 1s ease-out forwards;pointer-events:none}
 @keyframes sp-fly{0%{transform:translateY(0) scale(1) rotate(0);opacity:1}100%{transform:translateY(-140px) scale(0) rotate(200deg);opacity:0}}
 
+/* ── GAMES SECTION (home) ── */
+.games-section{padding:0 20px 20px}
+.games-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
+.game-card{
+  background:var(--card);border-radius:20px;padding:14px 8px 12px;
+  border:1px solid var(--border);box-shadow:var(--shadow);
+  cursor:pointer;text-align:center;transition:transform .15s cubic-bezier(.4,0,.2,1),box-shadow .15s;
+}
+.game-card:active{transform:scale(.95);box-shadow:none}
+.game-card-ico{font-size:2.2rem;margin-bottom:6px}
+.game-card-title{font-size:.68rem;font-weight:700;color:var(--text);line-height:1.2}
+
+/* ── BUILD-WORD EXERCISE ── */
+.bw-slots{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0 20px}
+.bw-slot{
+  min-width:56px;padding:10px 14px;border-radius:16px;
+  background:rgba(124,58,237,0.07);border:2px dashed rgba(124,58,237,0.35);
+  font-size:1.4rem;font-weight:800;color:var(--primary);text-align:center;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+}
+.bw-slot.filled{background:var(--primary-lt);border-style:solid;border-color:var(--primary)}
+.bw-clear{
+  background:none;border:1.5px solid rgba(0,0,0,0.12);border-radius:50px;
+  padding:8px 20px;font-family:inherit;font-size:.8rem;font-weight:600;color:var(--muted);
+  cursor:pointer;margin:0 auto 12px;display:block;
+}
+.bw-opts{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.bw-opt{
+  background:var(--card);border:2px solid var(--border);border-radius:16px;
+  padding:14px 18px;font-family:inherit;font-size:1.3rem;font-weight:800;color:var(--text);
+  cursor:pointer;transition:all .12s cubic-bezier(.4,0,.2,1);box-shadow:var(--shadow);
+}
+.bw-opt:active:not(:disabled){transform:scale(.93)}
+.bw-opt:disabled{opacity:.35;pointer-events:none}
+.bw-opt.used{opacity:.22;pointer-events:none}
+.bw-opt.wrong-flash{animation:shake .4s;border-color:rgba(255,59,48,0.5);background:var(--red-lt)}
+
+/* ── SUDOKU SCREEN ── */
+#s-sudoku{padding:0}
+.sudoku-topbar{
+  display:flex;align-items:center;gap:12px;padding:12px 20px;
+  background:rgba(255,255,255,0.8);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.su-title{font-weight:800;font-size:1rem;color:var(--text);flex:1;text-align:center}
+.sudoku-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:20px 20px 40px}
+.su-level-row{display:flex;gap:10px;margin-bottom:20px}
+.su-lv-btn{
+  padding:9px 22px;border-radius:50px;border:1.5px solid var(--border);
+  background:var(--card);font-family:inherit;font-weight:700;font-size:.82rem;color:var(--muted);
+  cursor:pointer;transition:all .15s;
+}
+.su-lv-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 4px 14px rgba(124,58,237,0.35)}
+.su-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:6px;width:100%;max-width:320px;margin-bottom:24px;
+}
+.su-cell{
+  aspect-ratio:1;border-radius:16px;background:var(--card);
+  border:1.5px solid var(--border);box-shadow:var(--shadow);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;font-weight:800;color:var(--primary);cursor:pointer;
+  transition:all .15s cubic-bezier(.34,1.56,.64,1);
+}
+.su-cell.clue{background:var(--primary-lt);border-color:rgba(124,58,237,0.3);cursor:default}
+.su-cell.selected{border-color:var(--primary);box-shadow:0 0 0 3px rgba(124,58,237,0.25);transform:scale(1.05)}
+.su-cell.error{background:var(--red-lt);border-color:rgba(255,59,48,0.5);color:var(--red)}
+.su-cell.solved{background:var(--green-lt);border-color:rgba(52,199,89,0.5);color:#1a7a36}
+.su-picker{display:flex;gap:10px;justify-content:center;margin-bottom:16px}
+.su-pick-btn{
+  width:58px;height:58px;border-radius:16px;border:1.5px solid var(--border);
+  background:var(--card);font-size:1.6rem;font-weight:800;color:var(--primary);
+  cursor:pointer;box-shadow:var(--shadow);font-family:inherit;
+  transition:all .12s cubic-bezier(.34,1.56,.64,1);
+}
+.su-pick-btn:active{transform:scale(.93)}
+.su-check-btn{
+  background:linear-gradient(135deg,var(--primary),var(--pink));color:#fff;
+  border:none;padding:16px 44px;border-radius:50px;font-family:inherit;
+  font-weight:800;font-size:1rem;cursor:pointer;
+  box-shadow:0 6px 20px rgba(124,58,237,0.38);
+}
+
+/* ── COLORIR SCREEN ── */
+#s-colorir{padding:0}
+.colorir-topbar{
+  display:flex;align-items:center;gap:12px;padding:12px 20px;
+  background:rgba(255,255,255,0.8);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.cl-title{font-weight:800;font-size:1rem;color:var(--text);flex:1;text-align:center}
+.colorir-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:16px 16px 40px;gap:14px}
+.cl-scene-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:4px}
+.cl-scene-btn{
+  padding:9px 16px;border-radius:50px;border:1.5px solid var(--border);
+  background:var(--card);font-family:inherit;font-weight:700;font-size:.8rem;color:var(--muted);
+  cursor:pointer;transition:all .15s;
+}
+.cl-scene-btn.active{background:var(--pink);color:#fff;border-color:var(--pink);box-shadow:0 4px 14px rgba(219,39,119,0.35)}
+.cl-svg-wrap{
+  width:100%;max-width:320px;border-radius:24px;overflow:hidden;
+  box-shadow:var(--shadow-md);background:#fff;border:1px solid var(--border);
+}
+.cl-svg-wrap svg{width:100%;height:auto;display:block}
+.cl-svg-wrap svg path,
+.cl-svg-wrap svg circle,
+.cl-svg-wrap svg ellipse,
+.cl-svg-wrap svg rect,
+.cl-svg-wrap svg polygon{cursor:pointer;transition:fill .3s}
+.cl-palette{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.cl-color{
+  width:38px;height:38px;border-radius:50%;cursor:pointer;border:2px solid rgba(0,0,0,0.1);
+  transition:transform .15s cubic-bezier(.34,1.56,.64,1),box-shadow .15s;
+}
+.cl-color:active{transform:scale(.88)}
+.cl-color.active{box-shadow:0 0 0 3px #fff,0 0 0 5px currentColor;transform:scale(1.12)}
+
+/* ── DRAW SCREEN ── */
+#s-draw{padding:0}
+.draw-topbar{
+  display:flex;align-items:center;gap:12px;padding:12px 20px;
+  background:rgba(255,255,255,0.8);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.dr-title{font-weight:800;font-size:1rem;color:var(--text);flex:1;text-align:center}
+.draw-body{flex:1;display:flex;flex-direction:column;padding:12px 16px 24px;gap:10px}
+.draw-canvas-wrap{flex:1;border-radius:20px;overflow:hidden;box-shadow:var(--shadow-md);background:#fff;border:1px solid var(--border);min-height:0}
+#draw-canvas{width:100%;height:100%;display:block;touch-action:none}
+.draw-tools{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.draw-tool{
+  width:44px;height:44px;border-radius:14px;border:1.5px solid var(--border);
+  background:var(--card);font-size:1.2rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);
+  transition:all .12s cubic-bezier(.34,1.56,.64,1);
+}
+.draw-tool:active{transform:scale(.9)}
+.draw-tool.active{background:var(--primary);border-color:var(--primary);box-shadow:0 4px 14px rgba(124,58,237,0.35)}
+.draw-palette{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.dr-color{
+  width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid rgba(0,0,0,0.1);
+  transition:transform .15s cubic-bezier(.34,1.56,.64,1);
+}
+.dr-color:active{transform:scale(.85)}
+.dr-color.active{box-shadow:0 0 0 2px #fff,0 0 0 4px currentColor;transform:scale(1.15)}
+.draw-size-row{display:flex;gap:8px;align-items:center;justify-content:center}
+.sz-btn{
+  padding:6px 14px;border-radius:50px;border:1.5px solid var(--border);
+  background:var(--card);font-family:inherit;font-size:.75rem;font-weight:700;color:var(--muted);cursor:pointer;
+}
+.sz-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
 /* ── TOAST ── */
 .toast{
   position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-10px);
@@ -366,6 +517,66 @@ body{
     <div class="fb-detail" id="fb-detail"></div>
   </div>
   <button class="cont-btn" id="fb-btn" onclick="nextStep()">Continuar →</button>
+</div>
+
+<!-- ══════════ SUDOKU DAS LETRAS ══════════ -->
+<div id="s-sudoku" class="screen">
+  <div class="sudoku-topbar">
+    <button class="back-btn" onclick="goHome()">✕</button>
+    <div class="su-title">🔡 Sudoku das Letras</div>
+    <div style="width:34px"></div>
+  </div>
+  <div class="sudoku-body">
+    <div class="su-level-row" id="su-levels"></div>
+    <div class="su-grid" id="su-grid"></div>
+    <div class="su-picker" id="su-picker">
+      <button class="su-pick-btn" onclick="suPick('A')">A</button>
+      <button class="su-pick-btn" onclick="suPick('E')">E</button>
+      <button class="su-pick-btn" onclick="suPick('I')">I</button>
+      <button class="su-pick-btn" onclick="suPick('O')">O</button>
+    </div>
+    <button class="su-check-btn" onclick="checkSudoku()">Verificar ✓</button>
+  </div>
+</div>
+
+<!-- ══════════ LIVRO DE COLORIR ══════════ -->
+<div id="s-colorir" class="screen">
+  <div class="colorir-topbar">
+    <button class="back-btn" onclick="goHome()">✕</button>
+    <div class="cl-title">🖌️ Livro de Colorir</div>
+    <div style="width:34px"></div>
+  </div>
+  <div class="colorir-body">
+    <div class="cl-scene-row" id="cl-scenes"></div>
+    <div class="cl-svg-wrap" id="cl-svg-wrap"></div>
+    <div class="cl-palette" id="cl-palette"></div>
+  </div>
+</div>
+
+<!-- ══════════ DESENHAR COM FORMAS ══════════ -->
+<div id="s-draw" class="screen">
+  <div class="draw-topbar">
+    <button class="back-btn" onclick="goHome()">✕</button>
+    <div class="dr-title">✏️ Desenhar</div>
+    <button class="back-btn" onclick="clearCanvas()" title="Limpar">🗑️</button>
+  </div>
+  <div class="draw-body">
+    <div class="draw-canvas-wrap" id="draw-canvas-wrap"><canvas id="draw-canvas"></canvas></div>
+    <div class="draw-tools" id="draw-tools">
+      <button class="draw-tool active" data-tool="pencil" onclick="setTool(this,'pencil')" title="Lápis">✏️</button>
+      <button class="draw-tool" data-tool="circle" onclick="setTool(this,'circle')" title="Círculo">⭕</button>
+      <button class="draw-tool" data-tool="rect" onclick="setTool(this,'rect')" title="Retângulo">▭</button>
+      <button class="draw-tool" data-tool="triangle" onclick="setTool(this,'triangle')" title="Triângulo">△</button>
+      <button class="draw-tool" data-tool="star" onclick="setTool(this,'star')" title="Estrela">⭐</button>
+      <button class="draw-tool" data-tool="eraser" onclick="setTool(this,'eraser')" title="Borracha">🧹</button>
+    </div>
+    <div class="draw-palette" id="draw-palette"></div>
+    <div class="draw-size-row">
+      <button class="sz-btn active" onclick="setSize(this,4)">P</button>
+      <button class="sz-btn" onclick="setSize(this,8)">M</button>
+      <button class="sz-btn" onclick="setSize(this,16)">G</button>
+    </div>
+  </div>
 </div>
 
 <div id="sparkles"></div>
@@ -472,6 +683,20 @@ function rnd4(fullArray, keepItem) {
   return arr;
 }
 
+// ── Word-build data (Monte a Palavra / Escreva com Sílabas) ──
+const WORD_BUILD_DATA = [
+  {emoji:'⚽',word:'BOLA',syllables:['BO','LA'],distractors:['SA','GA','CA','TA','PA','LO']},
+  {emoji:'🐱',word:'GATO',syllables:['GA','TO'],distractors:['BO','LA','SA','CA','RA','FO']},
+  {emoji:'🏠',word:'CASA',syllables:['CA','SA'],distractors:['GA','TO','BO','LA','DA','MA']},
+  {emoji:'🦆',word:'PATO',syllables:['PA','TO'],distractors:['BO','LA','SA','GA','CA','RA']},
+  {emoji:'🐸',word:'SAPO',syllables:['SA','PO'],distractors:['GA','TO','BO','LA','MA','CA']},
+  {emoji:'🌙',word:'BOLO',syllables:['BO','LO'],distractors:['SA','GA','CA','TA','MA','PA']},
+  {emoji:'🌹',word:'ROSA',syllables:['RO','SA'],distractors:['GA','TO','BO','LA','MA','DA']},
+  {emoji:'🐭',word:'RATO',syllables:['RA','TO'],distractors:['BO','LA','SA','GA','CA','MA']},
+  {emoji:'🐺',word:'LOBO',syllables:['LO','BO'],distractors:['GA','SA','RA','TO','MA','CA']},
+  {emoji:'🍌',word:'BANANA',syllables:['BA','NA','NA'],distractors:['BO','LA','SA','GA','CA','TO']},
+];
+
 // ── Build exercise pools for each module ──
 
 function buildVowelExercises() {
@@ -569,6 +794,35 @@ function buildSentExercises() {
   }));
 }
 
+function buildWordBuildExercises() {
+  return WORD_BUILD_DATA.map(d=>{
+    const allSyls = [...d.syllables, ...pickRandom(d.distractors, Math.min(4, d.distractors.length))];
+    return {
+      type:'build-word', module:9,
+      emoji: d.emoji,
+      word: d.word,
+      syllables: d.syllables,
+      options: shuffleArr(allSyls),
+      speak: d.word.toLowerCase(),
+      prompt:'Monte a palavra com as sílabas'
+    };
+  });
+}
+
+function buildSpellSylExercises() {
+  return WORD_BUILD_DATA.map(d=>{
+    const allSyls = [...d.syllables, ...pickRandom(d.distractors, Math.min(4, d.distractors.length))];
+    return {
+      type:'build-word', module:10,
+      word: d.word,
+      syllables: d.syllables,
+      options: shuffleArr(allSyls),
+      speak: d.word.toLowerCase(),
+      prompt:'Ouça e escreva com sílabas'
+    };
+  });
+}
+
 function buildChallengeExercises() {
   // 1 from each of the first 8 modules
   const pools = [
@@ -648,6 +902,20 @@ const SKILLS = [
     tipTitle:'🏆 Grande Desafio',
     tipText:'É o desafio final! Você vai usar tudo que aprendeu. Respira fundo... vai! 🏆',
     buildExercises: buildChallengeExercises
+  },
+  {
+    id:9, title:'Monte a Palavra', emoji:'🔤', bg:'#E8F5E9', color:'#1B5E20',
+    desc:'Monte palavras com sílabas',
+    tipTitle:'🔤 Monte a Palavra',
+    tipText:'Veja a imagem e toque nas sílabas na ordem certa para montar a palavra! 🔤',
+    buildExercises: buildWordBuildExercises
+  },
+  {
+    id:10, title:'Escreva com Sílabas', emoji:'✍️', bg:'#E3F2FD', color:'#0D47A1',
+    desc:'Ouça e escreva com sílabas',
+    tipTitle:'✍️ Escreva com Sílabas',
+    tipText:'Ouça a palavra e escolha as sílabas para escrevê-la na ordem! ✍️',
+    buildExercises: buildSpellSylExercises
   }
 ];
 
@@ -818,6 +1086,7 @@ function renderHome(){
   path.innerHTML = '';
   path.appendChild(label);
 
+  // Skill path (modules 0-10)
   SKILLS.forEach((sk,i)=>{
     const unlocked = i===0 || (S.crowns[i-1]||0)>=1;
     const crowns = S.crowns[i]||0;
@@ -852,6 +1121,27 @@ function renderHome(){
     wrap.appendChild(card);
     path.appendChild(wrap);
   });
+
+  // Extra games section
+  const gamesSec=document.createElement('div');
+  gamesSec.className='games-section';
+  gamesSec.innerHTML=`
+    <div class="section-label" style="margin-top:24px">🎮 Jogos Extras</div>
+    <div class="games-grid">
+      <div class="game-card" onclick="openSudoku()">
+        <div class="game-card-ico">🔡</div>
+        <div class="game-card-title">Sudoku das Letras</div>
+      </div>
+      <div class="game-card" onclick="openColorir()">
+        <div class="game-card-ico">🖌️</div>
+        <div class="game-card-title">Livro de Colorir</div>
+      </div>
+      <div class="game-card" onclick="openDraw()">
+        <div class="game-card-ico">✏️</div>
+        <div class="game-card-title">Desenhar</div>
+      </div>
+    </div>`;
+  path.appendChild(gamesSec);
 }
 
 // ═══════════════════════════════════════════════
@@ -946,7 +1236,8 @@ function renderExercise(){
   const TYPE_LABELS={
     0:'🌺 Vogais',1:'🅰️ Maiúsculas',2:'🔡 Minúsculas',
     3:'✍️ Cursiva',4:'✨ Sílabas',5:'🌸 Palavras',
-    6:'🎵 Rimas',7:'👸 Frases',8:'🏆 Desafio'
+    6:'🎵 Rimas',7:'👸 Frases',8:'🏆 Desafio',
+    9:'🔤 Monte a Palavra',10:'✍️ Escreva com Sílabas'
   };
   const pillLabel = TYPE_LABELS[ex.module] || '';
 
@@ -1061,6 +1352,29 @@ function renderExercise(){
       const safe=o.replace(/'/g,"&#39;");
       const ans=(ex.answer||'').replace(/'/g,"&#39;");
       html+=`<button class="opt" data-val="${o}" onclick="pick(this,'${safe}','${ans}')">${o}</button>`;
+    });
+    html+=`</div>`;
+
+  } else if(ex.type==='build-word'){
+    BW = {cur:[], total: ex.syllables.length};
+    html+=`<div class="ex-type-pill">${pillLabel}</div>`;
+    html+=`<div class="ex-prompt">${ex.prompt}</div>`;
+    if(ex.emoji){
+      html+=`<div class="ex-hero" style="flex:0;padding:4px 0 8px">`;
+      html+=`<div class="ex-hero-emoji" style="font-size:7rem">${ex.emoji}</div>`;
+      html+=`</div>`;
+    }
+    const safeSpeak=(ex.speak||'').replace(/'/g,"&#39;");
+    html+=`<button class="speaker-btn" onclick="speak('${safeSpeak}')">🔊 Ouvir</button>`;
+    // slots
+    html+=`<div class="bw-slots" id="bw-slots">`;
+    for(let i=0;i<ex.syllables.length;i++) html+=`<div class="bw-slot" id="bw-s${i}">·</div>`;
+    html+=`</div>`;
+    html+=`<button class="bw-clear" onclick="bwClear()">↩ Limpar</button>`;
+    html+=`<div class="bw-opts" id="bw-opts">`;
+    ex.options.forEach((s,i)=>{
+      const safe=s.replace(/'/g,"&#39;");
+      html+=`<button class="bw-opt" id="bwo${i}" onclick="bwTap(this,'${safe}',${i})">${s}</button>`;
     });
     html+=`</div>`;
   }
@@ -1201,6 +1515,406 @@ function shuffleArr(a){
     const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];
   }
   return a;
+}
+
+// ═══════════════════════════════════════════════
+//  BUILD-WORD GAME STATE
+// ═══════════════════════════════════════════════
+let BW = {cur:[], total:0};
+
+function bwTap(el, syl, idx){
+  if(CUR.answered) return;
+  const ex = CUR.exercises[CUR.step];
+  if(!ex || ex.type!=='build-word') return;
+  if(BW.cur.length >= BW.total) return;
+
+  BW.cur.push({syl, idx});
+  el.classList.add('used');
+
+  // update slots
+  BW.cur.forEach((entry, i)=>{
+    const slot = document.getElementById('bw-s'+i);
+    if(slot){ slot.textContent = entry.syl; slot.classList.add('filled'); }
+  });
+
+  if(BW.cur.length === BW.total){
+    const built = BW.cur.map(e=>e.syl).join('');
+    if(built === ex.word){
+      CUR.answered = true;
+      document.querySelectorAll('.bw-opt').forEach(b=>b.disabled=true);
+      CUR.combo++;
+      CUR.maxCombo=Math.max(CUR.maxCombo,CUR.combo);
+      CUR.correct++;
+      let xp=10;
+      if(CUR.combo>=5){xp+=20;beep('combo');sparkle(14);}
+      else if(CUR.combo>=3){xp+=10;beep('combo');sparkle(8);}
+      else{beep('ok');sparkle(4);}
+      S.xp+=xp;S.dailyXP+=xp;CUR.xpGained+=xp;save();
+      const okMsgs=['✅ Incrível!','✅ Perfeito!','✅ Muito bem!','✅ Arrasou!'];
+      setFB(true,okMsgs[Math.floor(Math.random()*okMsgs.length)],CUR.combo>=3?`🔥 Combo ×${CUR.combo}!`:'Continue assim! 🌟');
+      window.advanceTimer=setTimeout(()=>{window.advanceTimer=null;nextStep();},1800);
+    } else {
+      // wrong
+      document.querySelectorAll('.bw-slot').forEach(s=>{
+        s.style.animation='shake .4s';
+        s.style.color='var(--red)';
+        s.style.borderColor='rgba(255,59,48,0.5)';
+      });
+      beep('bad');
+      CUR.combo=0;
+      S.hearts=Math.max(0,S.hearts-1);
+      document.getElementById('e-hearts-display').textContent='❤️'+S.hearts;
+      save();
+      setTimeout(()=>bwClear(true), 700);
+      setFB(false,'💪 Quase!','Tente de novo na ordem certa!');
+      if(S.hearts===0){CUR.answered=true;CUR.gameOver=true;document.getElementById('fb-btn').textContent='Ver resultado →';}
+    }
+  }
+}
+
+function bwClear(fromWrong){
+  if(!fromWrong && CUR.answered) return;
+  BW.cur=[];
+  for(let i=0;i<BW.total;i++){
+    const slot=document.getElementById('bw-s'+i);
+    if(slot){slot.textContent='·';slot.classList.remove('filled');slot.style.animation='';slot.style.color='';slot.style.borderColor='';}
+  }
+  document.querySelectorAll('.bw-opt').forEach(b=>{b.classList.remove('used');b.disabled=false;});
+  if(fromWrong) document.getElementById('fb-bar').className='fb hidden';
+}
+
+// ═══════════════════════════════════════════════
+//  SUDOKU DAS LETRAS
+// ═══════════════════════════════════════════════
+const SUDOKU_PUZZLES = [
+  {
+    title:'Fácil',
+    grid:[['A',null,null,'O'],[null,'E','O',null],['E',null,null,'I'],['O',null,'I',null]],
+    sol: [['A','I','E','O'],['I','E','O','A'],['E','O','A','I'],['O','A','I','E']]
+  },
+  {
+    title:'Médio',
+    grid:[[null,'I',null,'E'],['A',null,'E',null],[null,'E',null,'I'],['E',null,'I',null]],
+    sol: [['O','I','A','E'],['A','O','E','I'],['I','E','O','A'],['E','A','I','O']]
+  },
+  {
+    title:'Difícil',
+    grid:[[null,null,'I',null],['E',null,null,'O'],[null,'A',null,null],[null,null,'O',null]],
+    sol: [['O','E','I','A'],['E','I','A','O'],['I','A','O','E'],['A','O','E','I']]
+  }
+];
+
+let SU = {puzzle:0, selected:null, board:[]};
+
+function openSudoku(){
+  SU = {puzzle:0, selected:null, board:[]};
+  show('s-sudoku');
+  renderSudokuLevels();
+  loadSudokuPuzzle(0);
+}
+
+function renderSudokuLevels(){
+  const el=document.getElementById('su-levels');
+  el.innerHTML=SUDOKU_PUZZLES.map((p,i)=>
+    `<button class="su-lv-btn${i===SU.puzzle?' active':''}" onclick="loadSudokuPuzzle(${i})">${p.title}</button>`
+  ).join('');
+}
+
+function loadSudokuPuzzle(idx){
+  SU.puzzle=idx;
+  SU.selected=null;
+  const p=SUDOKU_PUZZLES[idx];
+  SU.board=p.grid.map(row=>row.map(c=>({val:c,clue:c!==null})));
+  renderSudokuLevels();
+  renderSudokuGrid();
+}
+
+function renderSudokuGrid(){
+  const el=document.getElementById('su-grid');
+  const p=SUDOKU_PUZZLES[SU.puzzle];
+  el.innerHTML='';
+  SU.board.forEach((row,r)=>{
+    row.forEach((cell,c)=>{
+      const btn=document.createElement('button');
+      btn.className='su-cell'+(cell.clue?' clue':'')+(SU.selected&&SU.selected[0]===r&&SU.selected[1]===c?' selected':'');
+      btn.textContent=cell.val||'';
+      if(!cell.clue) btn.onclick=()=>suSelect(r,c);
+      el.appendChild(btn);
+    });
+  });
+}
+
+function suSelect(r,c){
+  SU.selected=[r,c];
+  renderSudokuGrid();
+}
+
+function suPick(letter){
+  if(!SU.selected) return;
+  const [r,c]=SU.selected;
+  if(SU.board[r][c].clue) return;
+  SU.board[r][c].val=letter;
+  renderSudokuGrid();
+}
+
+function checkSudoku(){
+  const p=SUDOKU_PUZZLES[SU.puzzle];
+  let allFilled=true, allCorrect=true;
+  SU.board.forEach((row,r)=>{
+    row.forEach((cell,c)=>{
+      if(!cell.val) allFilled=false;
+      if(cell.val && cell.val!==p.sol[r][c]) allCorrect=false;
+    });
+  });
+  if(!allFilled){toast('⚠️','Preencha tudo!','Ainda há células vazias');return;}
+  if(allCorrect){
+    beep('win');sparkle(16);
+    toast('🏆','Parabéns!','Sudoku completo! 🎉');
+    S.xp+=30;S.dailyXP+=30;save();
+    // mark cells solved
+    const cells=document.querySelectorAll('.su-cell');
+    cells.forEach(c=>c.classList.add('solved'));
+  } else {
+    beep('bad');
+    // mark errors
+    const cells=document.querySelectorAll('.su-cell');
+    let idx=0;
+    SU.board.forEach((row,r)=>{
+      row.forEach((cell,c)=>{
+        if(!cell.clue && cell.val && cell.val!==p.sol[r][c]) cells[idx].classList.add('error');
+        idx++;
+      });
+    });
+    toast('💡','Tem erros!','Corrija as células vermelhas');
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  LIVRO DE COLORIR
+// ═══════════════════════════════════════════════
+const COLORIR_SCENES = [
+  {
+    label:'🏠 Casa', svg:`
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <polygon data-part="roof" points="100,20 180,90 20,90" fill="#E57373" stroke="#333" stroke-width="2"/>
+      <rect data-part="wall" x="40" y="90" width="120" height="90" fill="#FFE082" stroke="#333" stroke-width="2"/>
+      <rect data-part="door" x="80" y="130" width="40" height="50" fill="#A1887F" stroke="#333" stroke-width="2"/>
+      <rect data-part="window" x="50" y="105" width="30" height="25" fill="#81D4FA" stroke="#333" stroke-width="2"/>
+      <rect data-part="window2" x="120" y="105" width="30" height="25" fill="#81D4FA" stroke="#333" stroke-width="2"/>
+      <ellipse data-part="sun" cx="170" cy="35" rx="18" ry="18" fill="#FFF176" stroke="#333" stroke-width="2"/>
+    </svg>`
+  },
+  {
+    label:'🐱 Gato', svg:`
+    <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+      <ellipse data-part="body" cx="100" cy="155" rx="60" ry="55" fill="#FFCC80" stroke="#333" stroke-width="2"/>
+      <circle data-part="head" cx="100" cy="90" r="45" fill="#FFCC80" stroke="#333" stroke-width="2"/>
+      <polygon data-part="ear-l" points="62,60 55,20 85,50" fill="#FF8A65" stroke="#333" stroke-width="2"/>
+      <polygon data-part="ear-r" points="138,60 145,20 115,50" fill="#FF8A65" stroke="#333" stroke-width="2"/>
+      <ellipse data-part="eye-l" cx="85" cy="85" rx="8" ry="10" fill="#333"/>
+      <ellipse data-part="eye-r" cx="115" cy="85" rx="8" ry="10" fill="#333"/>
+      <ellipse data-part="nose" cx="100" cy="100" rx="6" ry="4" fill="#FF8A80"/>
+      <ellipse data-part="belly" cx="100" cy="160" rx="35" ry="30" fill="#FFF8E1" stroke="#eee" stroke-width="1"/>
+    </svg>`
+  },
+  {
+    label:'🦋 Borboleta', svg:`
+    <svg viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
+      <ellipse data-part="wing-tl" cx="75" cy="80" rx="60" ry="50" fill="#CE93D8" stroke="#333" stroke-width="2"/>
+      <ellipse data-part="wing-tr" cx="145" cy="80" rx="60" ry="50" fill="#CE93D8" stroke="#333" stroke-width="2"/>
+      <ellipse data-part="wing-bl" cx="80" cy="145" rx="40" ry="35" fill="#F48FB1" stroke="#333" stroke-width="2"/>
+      <ellipse data-part="wing-br" cx="140" cy="145" rx="40" ry="35" fill="#F48FB1" stroke="#333" stroke-width="2"/>
+      <ellipse data-part="body" cx="110" cy="108" rx="10" ry="45" fill="#5C6BC0" stroke="#333" stroke-width="2"/>
+      <circle data-part="head" cx="110" cy="62" r="12" fill="#5C6BC0" stroke="#333" stroke-width="2"/>
+    </svg>`
+  },
+  {
+    label:'🌸 Flor', svg:`
+    <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+      <rect data-part="stem" x="95" y="130" width="10" height="80" fill="#66BB6A" stroke="#333" stroke-width="1"/>
+      <ellipse data-part="leaf-l" cx="75" cy="160" rx="22" ry="12" fill="#81C784" stroke="#333" stroke-width="1" transform="rotate(-30 75 160)"/>
+      <ellipse data-part="leaf-r" cx="125" cy="170" rx="22" ry="12" fill="#81C784" stroke="#333" stroke-width="1" transform="rotate(30 125 170)"/>
+      <ellipse data-part="petal1" cx="100" cy="70" rx="20" ry="38" fill="#F48FB1" stroke="#333" stroke-width="2"/>
+      <ellipse data-part="petal2" cx="100" cy="70" rx="38" ry="20" fill="#F48FB1" stroke="#333" stroke-width="2"/>
+      <ellipse data-part="petal3" cx="100" cy="70" rx="20" ry="38" fill="#F48FB1" stroke="#333" stroke-width="2" transform="rotate(45 100 70)"/>
+      <ellipse data-part="petal4" cx="100" cy="70" rx="20" ry="38" fill="#F48FB1" stroke="#333" stroke-width="2" transform="rotate(-45 100 70)"/>
+      <circle data-part="center" cx="100" cy="70" r="22" fill="#FFF176" stroke="#333" stroke-width="2"/>
+    </svg>`
+  }
+];
+
+const CL_PALETTE = ['#E57373','#FF8A65','#FFD54F','#AED581','#4DB6AC','#64B5F6','#9575CD','#F06292','#A1887F','#78909C','#FFFFFF','#333333'];
+let CL = {scene:0, color:'#E57373'};
+
+function openColorir(){
+  CL={scene:0,color:CL_PALETTE[0]};
+  show('s-colorir');
+  renderColorirScenes();
+  renderColorirSVG();
+  renderColorirPalette();
+}
+
+function renderColorirScenes(){
+  const el=document.getElementById('cl-scenes');
+  el.innerHTML=COLORIR_SCENES.map((s,i)=>
+    `<button class="cl-scene-btn${i===CL.scene?' active':''}" onclick="clScene(${i})">${s.label}</button>`
+  ).join('');
+}
+
+function clScene(i){
+  CL.scene=i;
+  renderColorirScenes();
+  renderColorirSVG();
+}
+
+function renderColorirSVG(){
+  const wrap=document.getElementById('cl-svg-wrap');
+  wrap.innerHTML=COLORIR_SCENES[CL.scene].svg;
+  wrap.querySelectorAll('[data-part]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      el.setAttribute('fill',CL.color);
+    });
+    el.style.cursor='pointer';
+  });
+}
+
+function renderColorirPalette(){
+  const el=document.getElementById('cl-palette');
+  el.innerHTML=CL_PALETTE.map((c,i)=>
+    `<div class="cl-color${c===CL.color?' active':''}" style="background:${c};${c===CL.color?'box-shadow:0 0 0 3px #fff,0 0 0 5px '+c:''}" onclick="clPickColor('${c}',this)"></div>`
+  ).join('');
+}
+
+function clPickColor(color, el){
+  CL.color=color;
+  document.querySelectorAll('.cl-color').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+//  DESENHAR COM FORMAS
+// ═══════════════════════════════════════════════
+const DR_COLORS=['#E57373','#FF8A65','#FFD54F','#AED581','#4DB6AC','#64B5F6','#9575CD','#F06292','#333333','#FFFFFF'];
+let DR = {tool:'pencil',color:DR_COLORS[0],size:4,drawing:false,sx:0,sy:0,snap:null};
+
+function openDraw(){
+  show('s-draw');
+  renderDrawPalette();
+  requestAnimationFrame(initDrawCanvas);
+}
+
+function renderDrawPalette(){
+  const el=document.getElementById('draw-palette');
+  el.innerHTML=DR_COLORS.map((c,i)=>
+    `<div class="dr-color${c===DR.color?' active':''}" style="background:${c};border:2px solid ${c==='#FFFFFF'?'#ccc':'rgba(0,0,0,0.1)'}" onclick="drPickColor('${c}',this)"></div>`
+  ).join('');
+}
+
+function initDrawCanvas(){
+  const wrap=document.getElementById('draw-canvas-wrap');
+  const canvas=document.getElementById('draw-canvas');
+  if(!wrap||!canvas) return;
+  canvas.width=wrap.clientWidth||320;
+  canvas.height=wrap.clientHeight||400;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#fff';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  function pt(e){
+    const r=canvas.getBoundingClientRect();
+    const src=e.touches?e.touches[0]:e;
+    return{x:(src.clientX-r.left)*(canvas.width/r.width),y:(src.clientY-r.top)*(canvas.height/r.height)};
+  }
+
+  canvas.addEventListener('pointerdown',e=>{
+    e.preventDefault();
+    const p=pt(e);
+    DR.drawing=true;DR.sx=p.x;DR.sy=p.y;
+    if(DR.tool==='pencil'||DR.tool==='eraser'){
+      ctx.beginPath();ctx.moveTo(p.x,p.y);
+    } else {
+      DR.snap=ctx.getImageData(0,0,canvas.width,canvas.height);
+    }
+  });
+  canvas.addEventListener('pointermove',e=>{
+    e.preventDefault();
+    if(!DR.drawing) return;
+    const p=pt(e);
+    if(DR.tool==='pencil'||DR.tool==='eraser'){
+      ctx.lineWidth=DR.tool==='eraser'?DR.size*3:DR.size;
+      ctx.strokeStyle=DR.tool==='eraser'?'#fff':DR.color;
+      ctx.lineCap='round';ctx.lineJoin='round';
+      ctx.lineTo(p.x,p.y);ctx.stroke();
+    } else if(DR.snap){
+      ctx.putImageData(DR.snap,0,0);
+      drawShape(ctx,DR.sx,DR.sy,p.x,p.y);
+    }
+  });
+  const endDraw=e=>{
+    if(!DR.drawing) return;
+    e.preventDefault();
+    const p=pt(e);
+    if(DR.tool!=='pencil'&&DR.tool!=='eraser'&&DR.snap){
+      ctx.putImageData(DR.snap,0,0);
+      drawShape(ctx,DR.sx,DR.sy,p.x,p.y);
+      DR.snap=null;
+    }
+    DR.drawing=false;
+  };
+  canvas.addEventListener('pointerup',endDraw);
+  canvas.addEventListener('pointerleave',endDraw);
+}
+
+function drawShape(ctx,x1,y1,x2,y2){
+  ctx.lineWidth=DR.size;
+  ctx.strokeStyle=DR.color;
+  ctx.fillStyle=DR.color+'44';
+  ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();
+  if(DR.tool==='circle'){
+    const cx=(x1+x2)/2,cy=(y1+y2)/2,rx=Math.abs(x2-x1)/2,ry=Math.abs(y2-y1)/2;
+    ctx.ellipse(cx,cy,rx||1,ry||1,0,0,Math.PI*2);
+  } else if(DR.tool==='rect'){
+    ctx.rect(x1,y1,x2-x1,y2-y1);
+  } else if(DR.tool==='triangle'){
+    ctx.moveTo((x1+x2)/2,y1);ctx.lineTo(x2,y2);ctx.lineTo(x1,y2);ctx.closePath();
+  } else if(DR.tool==='star'){
+    const cx=(x1+x2)/2,cy=(y1+y2)/2;
+    const outerR=Math.max(Math.abs(x2-x1),Math.abs(y2-y1))/2;
+    const innerR=outerR*0.4;
+    for(let i=0;i<10;i++){
+      const angle=(i*Math.PI/5)-Math.PI/2;
+      const r=i%2===0?outerR:innerR;
+      i===0?ctx.moveTo(cx+r*Math.cos(angle),cy+r*Math.sin(angle)):ctx.lineTo(cx+r*Math.cos(angle),cy+r*Math.sin(angle));
+    }
+    ctx.closePath();
+  }
+  ctx.fill();ctx.stroke();
+}
+
+function setTool(el,tool){
+  DR.tool=tool;
+  document.querySelectorAll('.draw-tool').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function drPickColor(color,el){
+  DR.color=color;
+  document.querySelectorAll('.dr-color').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setSize(el,sz){
+  DR.size=sz;
+  document.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function clearCanvas(){
+  const canvas=document.getElementById('draw-canvas');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
 }
 
 // ═══════════════════════════════════════════════
