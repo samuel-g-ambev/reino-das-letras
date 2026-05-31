@@ -583,7 +583,7 @@ body{
 
 <!-- ══════════ RESULT ══════════ -->
 <div id="s-result" class="screen">
-  <div class="res-mascot" id="r-mascot">🎉</div>
+  <div class="res-mascot" id="r-mascot">🎂</div>
   <h2 class="res-title" id="r-title">Parabéns!</h2>
   <p class="res-sub" id="r-sub">Lição completa</p>
   <div class="new-crowns" id="r-crowns"></div>
@@ -1836,7 +1836,7 @@ function endLesson(){
   save();
 
   const won=newCrowns>=1;
-  document.getElementById('r-mascot').textContent=won?'🎉':'💪';
+  document.getElementById('r-mascot').textContent=won?'🎂':'💪';
   document.getElementById('r-title').textContent=won?'Parabéns! 🌟':'Continue tentando!';
   document.getElementById('r-sub').textContent=won
     ?`"${SKILLS[CUR.skill].title}" — ${pct>=.9?'Perfeito! 🌟':pct>=.6?'Muito bem! ✨':'Bem feito! 👏'}`
