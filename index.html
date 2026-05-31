@@ -1850,7 +1850,11 @@ function endLesson(){
 
   beep('win');
   show('s-result');
-  if(won){ setTimeout(()=>sparkle(14),300); setTimeout(()=>sparkle(10),900); }
+  if(won){
+    setTimeout(()=>sparkle(14),300);
+    setTimeout(()=>sparkle(10),900);
+    setTimeout(()=>speak('Oi Lívia, é seu pai que fez esse jogo pra você!'), 800);
+  }
 }
 
 // ═══════════════════════════════════════════════
